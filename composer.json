@@ -1,0 +1,21 @@
+{
+    "require": {
+        "php-di/php-di": "^6.0",
+        "selective/basepath": "^0.2.0",
+        "selective/config": "^0.1.1",
+        "slim/http": "^1",
+        "slim/psr7": "^1",
+        "slim/slim": "^4.4",
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "src\\": "src"
+        }
+    },
+    "config": {
+        "process-timeout": 0,
+        "sort-packages": true
+    }
+}
