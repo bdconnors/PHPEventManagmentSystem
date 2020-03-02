@@ -18,9 +18,14 @@ abstract class PROP {
     const ALLOWED = 'numberallowed';
 
     const USER_ID = 'idattendee';
+    const USER_NAME = 'attendee.name';
     const EVENT_ID = 'idevent';
+    const EVENT_NAME = 'event.name';
     const SESSION_ID = 'idsession';
+    const SESSION_NAME = 'session.name';
     const VENUE_ID = 'idvenue';
+    const VENUE_NAME = 'venue.name';
     const ROLE_ID = 'idrole';
+    const ROLE_NAME = 'role.name';
 
 }

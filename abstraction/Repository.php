@@ -10,11 +10,11 @@ abstract class Repository{
 
     abstract public function retrieveAll();
 
-    abstract public function retrieve($prop, $value);
+    abstract public function retrieve($prop,$alias,$value);
 
     abstract public function create($values);
 
-    abstract public function update($values);
+    abstract public function update($id,$values);
 
     abstract public function delete($prop, $value);
 

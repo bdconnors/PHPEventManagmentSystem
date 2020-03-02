@@ -14,7 +14,7 @@ abstract class SQL{
     const end_columns = ") ";
 
     const begin_values = " VALUES(";
-    const end_values = ");";
+    const end_values = ")";
 
     const user_table = " attendee ";
     const user_id = " idattendee ";

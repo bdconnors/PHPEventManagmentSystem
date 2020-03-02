@@ -6,27 +6,29 @@ class Router{
     function __construct(IRequest $request){
         $this->request = $request;
         $this->routes = array(
-            'GET'=>[],
-            'POST'=>[],
-            'PUT'=>[],
-            'DELETE'=>[]
+            'GET'=>array(),
+            'POST'=>array(),
+            'PUT'=>array(),
+            'DELETE'=>array()
         );
     }
-    public function get($route,$controller,$method){
-        $this->routes['GET'][$route] = array($controller,$method);
+    public function get($route,$controller,$function){
+        $this->routes['GET'][$route] = array($controller,$function);
     }
-    public function post($route,$controller,$method,$params){
-        $this->routes['POST'][$route] = array($controller,$method);
+    public function post($route,$controller,$function){
+        $this->routes['POST'][$route] = array($controller,$function);
     }
-    public function put($route,$controller,$method){
-        $this->routes['PUT'][$route] = array($controller,$method);
+    public function put($route,$controller,$function){
+        $this->routes['PUT'][$route] = array($controller,$function);
     }
-    public function delete($route,$controller,$method){
-        $this->routes['DELETE'][$route] = array($controller,$method);
+    public function delete($route,$controller,$function){
+        $this->routes['DELETE'][$route] = array($controller,$function);
     }
     function resolve(){
-        $route = $this->routes[$this->request->method][$this->request->url];
-        call_user_func_array($route,array('request'=>$this->request,'response'=>new Response()));
+        $method = $this->request->method;
+        $path = $this->request->getPath();
+        $action = $this->routes[$method][$path];
+        call_user_func_array($action,array($this->request,new Response()));
     }
     function __destruct(){
         $this->resolve();
