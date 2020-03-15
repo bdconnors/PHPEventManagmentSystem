@@ -1,16 +1,16 @@
 <?php
-require_once('./util/EventDatabase.php');
+require_once('./util/Database.php');
 abstract class Repository{
 
-    protected EventDatabase $db;
+    protected Database $db;
 
-    public function __construct(EventDatabase $db){
+    public function __construct(Database $db){
         $this->db = $db;
     }
 
     abstract public function retrieveAll();
 
-    abstract public function retrieve($prop,$alias,$value);
+    abstract public function retrieve($prop,$value);
 
     abstract public function create($values);
 
@@ -18,6 +18,6 @@ abstract class Repository{
 
     abstract public function delete($prop, $value);
 
-    abstract public function build($data);
+    abstract public function build($values);
 
 }

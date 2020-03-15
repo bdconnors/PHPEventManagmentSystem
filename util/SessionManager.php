@@ -6,6 +6,7 @@ class SessionManager
     public function __construct(){}
 
     public function beginSession($user){
+        session_start();
         $date = $this->getCurrentDate();
         $expiration = $this->getCookieExpiration();
         $_SESSION['loggedIn'] = true;

@@ -19,15 +19,10 @@ abstract class SQL{
     const user_table = " attendee ";
     const user_id = " idattendee ";
 
-
-
-    const retrieve_all_users ="SELECT idattendee,
-                                  attendee.name AS 'attendee',
-                                  password,
-                                  idrole,
-                                  role.name AS 'role'
-                            FROM attendee 
-                            JOIN role on role.idrole = attendee.role";
+    const retrieve_all_venues = "SELECT * FROM VENUE";
+    const retrieve_all_roles = "SELECT * FROM ROLE";
+    const retrieve_all_users ="SELECT * FROM ATTENDEE";
+    const retrieve_all_events ="SELECT * FROM EVENT";
 
     const create_user = self::INSERT.
         self::user_table.

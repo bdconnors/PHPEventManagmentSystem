@@ -1,7 +1,7 @@
 <?php
 
 require_once('./abstraction/Entity.php');
-class User extends Entity {
+class Account extends Entity {
 
     private $password;
     public Role $role;

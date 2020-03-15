@@ -2,13 +2,14 @@
 require_once('./abstraction/Service.php');
 require_once('./abstraction/Repository.php');
 class EventService extends Service{
-
-    public function __construct(Repository $repo){
+    private Validation $validation;
+    public function __construct(Repository $repo,Validation $validation){
         parent::__construct($repo);
+        $this->validation = $validation;
     }
 
     public function retrieveAll(){
-        // TODO: Implement retrieveAll() method.
+        return $this->repo->retrieveAll();
     }
 
     public function retrieve($id){

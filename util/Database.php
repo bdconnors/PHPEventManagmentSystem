@@ -1,5 +1,5 @@
 <?php
-class EventDatabase extends PDO {
+class Database extends PDO {
     public function __construct($dsn,$user,$pass,$options){
         parent::__construct($dsn,$user,$pass,$options);
     }

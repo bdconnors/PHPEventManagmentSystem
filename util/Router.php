@@ -1,10 +1,8 @@
 <?php
 require_once('./util/Response.php');
 class Router{
-    public $request;
     public $routes;
-    function __construct(IRequest $request){
-        $this->request = $request;
+    function __construct(){
         $this->routes = array(
             'GET'=>array(),
             'POST'=>array(),
@@ -24,16 +22,18 @@ class Router{
     public function delete($route,$controller,$function){
         $this->routes['DELETE'][$route] = array($controller,$function);
     }
-    function resolve(){
-        $method = $this->request->method;
-        $path = $this->request->getPath();
-        $action = $this->routes[$method][$path];
-        call_user_func_array($action,array($this->request,new Response()));
+    function resolve(IRequest $request,IResponse $response){
+        $method = $request->method;
+        $path = $request->getPath();
+        if($request->validSession() || $request->validPublicRequest()) {
+            if (isset($this->routes[$method][$path])) {
+                $action = $this->routes[$method][$path];
+                call_user_func_array($action, array($request, $response));
+            }
+        }else{
+            $request->destroySession();
+            $response->redirect('/login');
+        }
     }
-    function __destruct(){
-        $this->resolve();
-    }
-
-
 
 }

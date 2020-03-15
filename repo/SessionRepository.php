@@ -3,8 +3,10 @@
 require_once('./abstraction/Repository.php');
 class SessionRepository extends Repository {
 
-    public function __construct(EventDatabase $db){
+    protected array $sessions;
+    public function __construct(Database $db){
         parent::__construct($db);
+        $this->sessions = array();
     }
 
     public function retrieveAll(){
@@ -19,7 +21,7 @@ class SessionRepository extends Repository {
         // TODO: Implement create() method.
     }
 
-    public function update($values){
+    public function update($id,$values){
         // TODO: Implement update() method.
     }
 
