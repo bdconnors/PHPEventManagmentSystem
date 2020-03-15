@@ -33,13 +33,14 @@ $router = new Router();
 $_SERVER['ROUTER']= $router;
 
 //GET
-$router->get('/login', 'DisplayController', 'displayLogin');
-$router->get('/register', 'DisplayController', 'displayRegistration');
-$router->get('/dashboard', 'DisplayController', 'displayDashboard');
+$router->get('/login', 'DisplayController', 'login');
+$router->get('/dashboard', 'DisplayController', 'dashboard');
+$router->get('/accounts', 'DisplayController', 'accountManagement');
+$router->get('/accounts/create', 'DisplayController', 'createAccount');
 
 //POST
 $router->post('/login', 'AccountController', 'login');
-$router->post('/register', 'AccountController', 'createAccount');
+$router->post('/accounts/create', 'AccountController', 'createAccount');
 
 //API
 $router->get('/api/user', 'AccountController', 'retrieveAccount');

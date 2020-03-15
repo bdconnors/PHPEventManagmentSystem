@@ -67,12 +67,6 @@ class Request implements IRequest
     public function loginRequest(){
         return $this->url === '/login';
     }
-    public function registrationRequest(){
-        return $this->url === '/register';
-    }
-    public function validPublicRequest(){
-        return $this->loginRequest() || $this->registrationRequest();
-    }
     public function validSession(){
         $valid = false;
         if(!empty($_SESSION['loggedIn'])){

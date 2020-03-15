@@ -1,8 +1,9 @@
 <?php
 
-require_once './view/component/models/AccountPanel.php';
-require_once './view/component/models/MenuPanel.php';
-class NavigationBar {
+require_once './view/component/AccountPanel.php';
+require_once './view/component/MenuPanel.php';
+require_once './interface/IComponent.php';
+class NavigationBar implements IComponent {
     public AccountPanel $accountPanel;
     public MenuPanel $menuPanel;
     public function __construct(){
@@ -17,12 +18,10 @@ class NavigationBar {
     }
     public function html(){
         $html = "<nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
-  <div class='mx-auto order-0'>
-        <a class='navbar-brand mx-auto' href='#'>Event Management System</a>
+        <a class='navbar-brand mx-auto' href='/dashboard'>Event Management System</a>
         <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='.dual-collapse2'>
             <span class='navbar-toggler-icon'></span>
-        </button>
-    </div>";
+        </button>";
         $html .= $this->menuPanel->html();
         $html .= $this->accountPanel->html();
         $html .= "</nav>";

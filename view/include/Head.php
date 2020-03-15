@@ -1,6 +1,6 @@
 <?php
 
-require_once'./interface/ITemplate.php';
+require_once './interface/ITemplate.php';
 class Head implements ITemplate
 {
 

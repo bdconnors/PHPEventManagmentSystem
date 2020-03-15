@@ -1,6 +1,6 @@
 <?php
 
-require_once'./interface/ITemplate.php';
+require_once './interface/ITemplate.php';
 class Foot implements ITemplate {
     static public function render($values = array('scripts'=>array())) {
         $foot = Foot::createScriptTags($values['scripts']);
@@ -10,7 +10,7 @@ class Foot implements ITemplate {
     static public function createScriptTags($scripts = array()){
         $tags = "";
         foreach ($scripts as $script) {
-            $tags.="<script src='./js/{$script}.js'></script>";
+            $tags.="<script src='/js/{$script}.js'></script>";
         }
         return $tags;
     }

@@ -1,7 +1,7 @@
 <?php
 
-
-class MenuPanel{
+require_once './interface/IComponent.php';
+class MenuPanel implements IComponent {
     public $menus;
     public function __construct($menus = array()){
         $this->menus = $menus;

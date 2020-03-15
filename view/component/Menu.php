@@ -1,7 +1,8 @@
 <?php
-require_once './view/component/models/Options.php';
-require_once './view/component/models/TabbedOptions.php';
-class Menu {
+require_once './view/component/Options.php';
+require_once './view/component/TabbedOptions.php';
+require_once './interface/IComponent.php';
+class Menu implements IComponent {
 
     public $id;
     public $label;

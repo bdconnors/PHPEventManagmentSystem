@@ -1,8 +1,9 @@
 <?php
 
 require_once './interface/ITemplate.php';
-require_once './view/component/Head.php';
-require_once './view/component/Foot.php';
+require_once './view/include/Head.php';
+require_once './view/include/Foot.php';
+require_once './view/section/Navigation.php';
 class LoginForm implements ITemplate{
     static public function render($values = array('err'=>'')){
         $register = '"./register"';
@@ -14,8 +15,7 @@ class LoginForm implements ITemplate{
                     Password: <input type='password' name='password' id='password'/>
                     <br/>
                     <input type='submit' value='Login'/>              
-                </form>    
-                <button onclick='window.location.href={$register}'>Register</button>";
+                </form>";
         $form .= Foot::render(array('scripts'=>array('validation','sanitization')));
         return $form;
     }

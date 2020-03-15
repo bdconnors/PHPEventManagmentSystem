@@ -25,7 +25,7 @@ class Router{
     function resolve(IRequest $request,IResponse $response){
         $method = $request->method;
         $path = $request->getPath();
-        if($request->validSession() || $request->validPublicRequest()) {
+        if($request->validSession() || $request->loginRequest()) {
             if (isset($this->routes[$method][$path])) {
                 $action = $this->routes[$method][$path];
                 call_user_func_array($action, array($request, $response));

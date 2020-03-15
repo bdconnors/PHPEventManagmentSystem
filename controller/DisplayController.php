@@ -2,16 +2,16 @@
 
 require_once('./view/LoginForm.php');
 require_once('./view/Dashboard.php');
-require_once('./view/RegistrationForm.php');
+require_once('./view/CreateAccountForm.php');
 class DisplayController{
 
-    static public function displayLogin(Request $request,Response $response){
+    static public function login(Request $request,Response $response){
         $response->send(LoginForm::render());
     }
-    static public function displayRegistration(Request $request,Response $response){
-        $response->send(RegistrationForm::render());
+    static public function createAccount(Request $request,Response $response){
+        $response->send(CreateAccountForm::render(array('user'=>$_SESSION['account'])));
     }
-    static public function displayDashboard(Request $request,Response $response){
+    static public function dashboard(Request $request,Response $response){
         $response->send(Dashboard::render(array('user'=>$_SESSION['account'])));
     }
 

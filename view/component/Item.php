@@ -1,7 +1,7 @@
 <?php
 
-
-class Item {
+require_once './interface/IComponent.php';
+class Item implements IComponent {
     public $id;
     public $label;
     public function __construct($id,$label){
@@ -9,6 +9,6 @@ class Item {
         $this->label = $label;
     }
     public function html(){
-        return "<a class='dropdown-models' href='#' id='{$this->id}'>$this->label</a>";
+        return "<a class='dropdown-item' href='#' id='{$this->id}'>$this->label</a>";
     }
 }

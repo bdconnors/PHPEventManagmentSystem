@@ -1,6 +1,6 @@
 <?php
 
-
+require_once './view/component/Options.php';
 class TabbedOptions extends Options {
     public $default;
     public function __construct($id, $label, $options,$defaultLabel){

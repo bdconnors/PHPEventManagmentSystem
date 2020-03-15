@@ -1,7 +1,6 @@
 <?php
 
 
-class VenueProfile
-{
+class VenueProfile {
 
 }

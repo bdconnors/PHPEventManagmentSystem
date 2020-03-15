@@ -1,8 +1,8 @@
 <?php
 
 require_once './view/component/NavigationBar.php';
-require_once './view/component/models/Item.php';
-require_once './view/component/models/Menu.php';
+require_once './view/component/Item.php';
+require_once './view/component/Menu.php';
 class NavigationBuilder {
     public NavigationBar $nav;
     public function __construct(){

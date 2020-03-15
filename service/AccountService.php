@@ -26,7 +26,7 @@ class AccountService extends Service
             $account = $this->repo->create($values);
             $response->sendJSON($account);
         }else{
-            $response->send(RegistrationForm::render(array('err'=>'Invalid user name or password')));
+            $response->send(CreateAccountForm::render(array('err'=>'Invalid user name or password')));
         }
     }
     public function retrieve(Request $request,Response $response){

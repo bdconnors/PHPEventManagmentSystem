@@ -1,6 +1,6 @@
 <?php
 
-
+require_once './view/component/Item.php';
 class Options extends Item {
     public $options;
     public function __construct($id,$label,$options = array()){

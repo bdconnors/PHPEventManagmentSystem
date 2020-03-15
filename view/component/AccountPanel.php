@@ -1,6 +1,6 @@
 <?php
-
-class AccountPanel {
+require_once './interface/IComponent.php';
+class AccountPanel implements IComponent {
     public Account $account;
     public function __construct(){}
     public function setAccount($account){
@@ -27,16 +27,13 @@ class AccountPanel {
             </button>
             <div class='dropdown-menu' aria-labelledby='accountPanel'>
                 <div class='dropdown-header'>Role: {$this->account->role->name}</div>
-                <a class='dropdown-models' id='loginDropDown' href='#' onclick='logOut()'>Log Out</a>
+                <a class='dropdown-item' id='loginDropDown' href='#' onclick='logOut()'><i class='fa fa-power-off'></i> <b>Log Out</b></a>
             </div>
          </li>";
     }
     protected function getDefaultItems(){
         return "<li class='nav-models'>
                 <a class='nav-link' href='./login'>Login</a>
-            </li>
-            <li class='nav-models'>
-                <a class='nav-link' href='./register'>Register</a>
             </li>
         </ul>";
     }
