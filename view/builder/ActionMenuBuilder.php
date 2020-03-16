@@ -6,8 +6,7 @@ class ActionMenuBuilder {
     public function __construct(){
         $this->menu = new ActionMenu();
     }
-    public function build($values){
-        $account = $values['user'];
+    public function build($account){
         $role = $account->role->id;
         if($role == 1 || $role == 2){
             $this->buildAdminActions();
@@ -21,24 +20,19 @@ class ActionMenuBuilder {
         return $this->menu;
     }
     protected function buildAdminActions(){
-        $this->menu->add('Account Management','Manage attendees','./img/attendeeCap.jpeg','./accounts/create');
-        $this->menu->add('Event Management','Manage events','./img/eventCap.jpeg','#');
-        $this->menu->add('Venue Management','Manage venues','./img/venueCap.jpeg','#');
-        $this->menu->add('Session Management','Manage event sessions','./img/venueCap.jpeg','#');
-        $this->menu->add('Registrations',"View your registrations",'./img/eventCap.jpeg','#');
-        $this->menu->add('Events','View all events','./img/eventCap.jpeg','#');
+        $this->menu->add('Accounts','View and manage attendee accounts','./img/attendeeCap.jpeg','/accounts');
+        $this->menu->add('Venues','View and manage venues','./img/venueCap.jpeg','/venues');
+        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/events');
+        $this->menu->add('Events','View and manage events','./img/eventCap.jpeg','/events');
 
     }
     protected function buildManagerActions(){
-        $this->menu->add('Event Management','Manage events assigned to you','./img/eventCap.jpeg','#');
-        $this->menu->add('Attendee Management','Manage the attendees of events assigned to you','./img/attendeeCap.jpeg','#');
-        $this->menu->add('Session Management','Manage the sessions of events assigned to you','./img/venueCap.jpeg','#');
-        $this->menu->add('Registrations',"View your registrations",'./img/eventCap.jpeg','#');
-        $this->menu->add('Events','View all events','./img/eventCap.jpeg','#');
+        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/events');
+        $this->menu->add('Events','View and manage assigned events','./img/eventCap.jpeg','/events');
 
     }
     protected function buildAttendeeActions(){
-        $this->menu->add('Registrations',"View your registrations",'./img/eventCap.jpeg','#');
-        $this->menu->add('Events','View all events','./img/eventCap.jpeg','#');
+        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/events');
+        $this->menu->add('Events','View all events','./img/eventCap.jpeg','/events');
     }
 }

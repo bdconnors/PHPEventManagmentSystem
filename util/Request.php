@@ -5,25 +5,9 @@ class Request implements IRequest
 {
     public $url;
     public $method;
-    public $body;
-    public $loggedIn;
-    public $account;
     function __construct() {
         $this->url = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
-        if($this->method == "POST"){
-            $this->body = $_POST;
-        }else if($this->method == 'GET'){
-            $this->body = $_GET;
-        }else{
-            $this->body = $_REQUEST;
-        }
-        if(!empty($_SESSION['loggedIn'])){
-            $this->loggedIn = $_SESSION['loggedIn'];
-        }
-        if(!empty($_SESSION['account'])){
-            $this->account = $_SESSION['account'];
-        }
     }
     public function getParsedUrl(){
         return parse_url($this->url);
@@ -41,19 +25,24 @@ class Request implements IRequest
         parse_str($_SERVER['QUERY_STRING'],$query);
         return $query;
     }
-    public function hasQuery(){
-        $parsed = $this->getParsedUrl();
-        return isset($parsed['query']);
-    }
     public function hasParam($param){
         $query = $this->getQuery();
         return isset($query[$param]);
     }
     public function getBody() {
-        return $this->body;
+        if($this->method == "POST"){
+            return $_POST;
+        }else if($this->method == 'GET'){
+            return $_GET;
+        }else{
+            return $_REQUEST;
+        }
     }
     public function getJSONBody(){
-        return json_encode($this->body);
+        return json_encode($this->getBody());
+    }
+    public function getUser(){
+        return $_SESSION['account'];
     }
     public function createSession($account){
         $date = $this->getCurrentDate();
@@ -61,11 +50,6 @@ class Request implements IRequest
         $_SESSION['loggedIn'] = true;
         $_SESSION['account'] = $account;
         setcookie('loggedIn',$date,$expiration,"/");
-        $this->loggedIn = true;
-        $this->account = $account;
-    }
-    public function loginRequest(){
-        return $this->url === '/login';
     }
     public function validSession(){
         $valid = false;

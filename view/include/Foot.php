@@ -2,16 +2,17 @@
 
 require_once './interface/ITemplate.php';
 class Foot implements ITemplate {
-    static public function render($values = array('scripts'=>array())) {
-        $foot = Foot::createScriptTags($values['scripts']);
+    public $scripts;
+    public function __construct($scripts = array()){
+        $this->scripts = $scripts;
+    }
+
+    public function __toString() {
+        $foot = "";
+        foreach ($this->scripts as $script) {
+            $foot.="<script src='/js/{$script}.js'></script>";
+        }
         $foot .= "</body></html>";
         return $foot;
-    }
-    static public function createScriptTags($scripts = array()){
-        $tags = "";
-        foreach ($scripts as $script) {
-            $tags.="<script src='/js/{$script}.js'></script>";
-        }
-        return $tags;
     }
 }

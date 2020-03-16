@@ -1,4 +1,4 @@
 <?php
-interface ITemplate{
-    static public function render($values);
+interface ITemplate {
+    public function __toString();
 }

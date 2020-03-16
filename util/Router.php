@@ -2,7 +2,9 @@
 require_once('./util/Response.php');
 class Router{
     public $routes;
-    function __construct(){
+    protected Authorization $auth;
+    function __construct(Authorization $auth){
+        $this->auth = $auth;
         $this->routes = array(
             'GET'=>array(),
             'POST'=>array(),
@@ -10,29 +12,29 @@ class Router{
             'DELETE'=>array()
         );
     }
-    public function get($route,$controller,$function){
-        $this->routes['GET'][$route] = array($controller,$function);
+    public function get($path,$controller,$function,$permissionLevel){
+        $this->addRoute('GET',$path,$controller,$function,$permissionLevel);
     }
-    public function post($route,$controller,$function){
-        $this->routes['POST'][$route] = array($controller,$function);
+    public function post($path,$controller,$function,$permissionLevel){
+        $this->addRoute('POST',$path,$controller,$function,$permissionLevel);
     }
-    public function put($route,$controller,$function){
-        $this->routes['PUT'][$route] = array($controller,$function);
+    public function put($path,$controller,$function,$permissionLevel){
+        $this->addRoute('PUT',$path,$controller,$function,$permissionLevel);
     }
-    public function delete($route,$controller,$function){
-        $this->routes['DELETE'][$route] = array($controller,$function);
+    public function delete($path,$controller,$function,$permissionLevel){
+        $this->addRoute('DELETE',$path,$controller,$function,$permissionLevel);
     }
-    function resolve(IRequest $request,IResponse $response){
+    protected function addRoute($method,$path,$controller,$function,$permissionLevel){
+        $this->routes[$method][$path] = new Route($path,$controller,$function,$permissionLevel);
+    }
+    public function resolve(IRequest $request,IResponse $response){
         $method = $request->method;
         $path = $request->getPath();
-        if($request->validSession() || $request->loginRequest()) {
-            if (isset($this->routes[$method][$path])) {
-                $action = $this->routes[$method][$path];
-                call_user_func_array($action, array($request, $response));
-            }
+        if (isset($this->routes[$method][$path])) {
+            $route = $this->routes[$method][$path];
+            $this->auth->authorize($route,$request,$response);
         }else{
-            $request->destroySession();
-            $response->redirect('/login');
+            $response->redirect('/dashboard');
         }
     }
 

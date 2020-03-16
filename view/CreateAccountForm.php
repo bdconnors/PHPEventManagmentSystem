@@ -3,10 +3,15 @@
 require_once './interface/ITemplate.php';
 class CreateAccountForm implements ITemplate{
 
-    static public function render($values = array('user'=>null)){
-        $form = Head::render(array('title'=>'Register'));
-        $form .= Navigation::render($values);
-        $form.= "<p style='color:red' id='err'></p>
+    public $user;
+    public function __construct($user = null){
+        $this->user = $user;
+    }
+
+    public function __toString(){
+        $form = new Head('Create Account');
+        $form .= new Navigation($this->user);
+        $form .= "<p style='color:red' id='err'></p>
                 <form id='registrationForm' method='post' onsubmit='return validateRegistration()'>
                     Account Type: <select id='role' name='role'>     
                         <option selected value='4'>Attendee</option>
@@ -20,7 +25,7 @@ class CreateAccountForm implements ITemplate{
                     <input type='submit' value='Submit'/>
                     <input type='reset' value='Reset'/>
                 </form>";
-        $form.=Foot::render(array('scripts'=>array('navbar','validation','sanitization')));
+        $form .= new Foot(array('navbar','validation','sanitization'));
         return $form;
     }
 

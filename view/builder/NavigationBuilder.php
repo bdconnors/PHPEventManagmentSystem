@@ -11,16 +11,16 @@ class NavigationBuilder {
     public function buildTabbedMenu($id,$label,$groups){
         $dropDown = new Menu($id,$label);
         foreach ($groups as $key=>$value){
-            $items = $this->makeItemList($value);
-            $dropDown->addOptionGroup("{$key}Options",$key,$items);
+            $items = $this->makeItemList($value,$id);
+            $dropDown->addOptionGroup($id,$key,$items);
         }
         $this->nav->addMenu($dropDown);
     }
     public function buildMenu($id,$label,$entities)
     {
         $dropDown = new Menu($id, $label);
-        $items = $this->makeItemList($entities);
-        $dropDown->addOptions("{$label}Options", $label, $items);
+        $items = $this->makeItemList($entities,$id);
+        $dropDown->addOptions($id, $label, $items);
         $this->nav->addMenu($dropDown);
     }
     public function buildAccountPanel($account){
@@ -29,10 +29,10 @@ class NavigationBuilder {
     public function produce(){
         return $this->nav;
     }
-    protected function makeItemList($entities){
+    protected function makeItemList($entities,$type){
         $items = [];
         foreach($entities as $entity){
-            array_push($items,new Item($entity->id,$entity->name));
+            array_push($items,new Item($entity->id,$entity->name,$type));
         }
         return $items;
     }

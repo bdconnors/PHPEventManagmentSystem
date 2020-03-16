@@ -3,20 +3,26 @@
 require_once './interface/ITemplate.php';
 require_once './view/include/Head.php';
 require_once './view/include/Foot.php';
-require_once './view/section/Navigation.php';
+require_once './view/include/Navigation.php';
 class LoginForm implements ITemplate{
-    static public function render($values = array('err'=>'')){
-        $register = '"./register"';
-        $form = Head::render(array('title'=>'Login'));
-        $form .= Navigation::render();
-        $form .= "<p style='color:red' id='err'>{$values['err']}</p>
+    public $errMessage;
+    public function __construct($errMessage = ''){
+        $this->errMessage = $errMessage;
+    }
+
+    public function __toString(){
+        $head = new Head('Login');
+        $foot = new Foot(array('validation','sanitization'));
+        $form = $head;
+        $form .= new Navigation();
+        $form .= "<p style='color:red' id='err'>{$this->errMessage}</p>
                 <form id='loginForm' method='post' onsubmit='validateLogin()'>
                     Account Name: <input type='text' name='name' id='name'/>
                     Password: <input type='password' name='password' id='password'/>
                     <br/>
                     <input type='submit' value='Login'/>              
                 </form>";
-        $form .= Foot::render(array('scripts'=>array('validation','sanitization')));
+        $form .= $foot;
         return $form;
     }
 

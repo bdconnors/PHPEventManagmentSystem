@@ -4,11 +4,9 @@ require_once('./model/Venue.php');
 class VenueRepository extends Repository {
 
     protected array $venues;
-    protected EventRepository $events;
-    public function __construct(Database $db,EventRepository $events){
+    public function __construct(Database $db){
         parent::__construct($db);
         $this->venues = array();
-        $this->events = $events;
         $this->load();
     }
 
@@ -16,7 +14,6 @@ class VenueRepository extends Repository {
         $rows = $this->db->retrieve(SQL::retrieve_all_venues,[]);
         foreach ($rows as $row){
             $id = $row['idvenue'];
-            $row['events'] = $this->events->retrieve('venue',$id);
             unset($row['idvenue']);
             $row['id'] = $id;
             $venue = $this->build($row);
@@ -28,14 +25,14 @@ class VenueRepository extends Repository {
     }
 
     public function retrieve($prop, $value){
-        $selectedVenue = false;
+        $results = [];
         foreach($this->venues as $v){
-            $role = (array) $v;
-            if($role[$prop] == $value){
-                $selectedVenue= $v;
+            $venue = (array) $v;
+            if($venue[$prop] == $value){
+                array_push($results,$v);
             }
         }
-        return $selectedVenue;
+        return $results;
     }
 
     public function create($values){
@@ -51,7 +48,7 @@ class VenueRepository extends Repository {
     }
 
     public function build($values){
-        return new Venue($values['id'],$values['name'],$values['capacity'],$values['events']);
+        return new Venue($values['id'],$values['name'],$values['capacity']);
     }
 
 }

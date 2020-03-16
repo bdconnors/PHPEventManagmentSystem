@@ -23,6 +23,9 @@ abstract class SQL{
     const retrieve_all_roles = "SELECT * FROM ROLE";
     const retrieve_all_users ="SELECT * FROM ATTENDEE";
     const retrieve_all_events ="SELECT * FROM EVENT";
+    const retrieve_all_sessions = "SELECT * FROM SESSION";
+    const retrieve_all_registrations = "SELECT * FROM attendee_event;";
+    const retrieve_all_managed_events= "SELECT * FROM manager_event;";
 
     const create_user = self::INSERT.
         self::user_table.

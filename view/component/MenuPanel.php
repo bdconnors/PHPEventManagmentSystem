@@ -1,7 +1,6 @@
 <?php
 
-require_once './interface/IComponent.php';
-class MenuPanel implements IComponent {
+class MenuPanel {
     public $menus;
     public function __construct($menus = array()){
         $this->menus = $menus;
@@ -9,11 +8,11 @@ class MenuPanel implements IComponent {
     public function add($menu){
         array_push($this->menus,$menu);
     }
-    public function html(){
+    public function __toString(){
         $html = "<div class='navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2'>
                         <ul class='navbar-nav mr-auto'>";
         foreach ($this->menus as $menu){
-            $html .= $menu->html();
+            $html .= $menu;
         }
         $html .="</ul></div>";
         return $html;

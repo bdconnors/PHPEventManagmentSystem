@@ -8,10 +8,12 @@ require_once('./model/Account.php');
 class AccountRepository extends Repository
 {
     protected RoleRepository $roles;
+    protected EventRepository $events;
     protected array $accounts;
-    public function __construct(Database $db,RoleRepository $roles){
+    public function __construct(Database $db,RoleRepository $roles,EventRepository $events){
         parent::__construct($db);
         $this->roles = $roles;
+        $this->events = $events;
         $this->accounts = array();
         $this->load();
     }
@@ -24,6 +26,7 @@ class AccountRepository extends Repository
         unset($values['role']);
         $values['id'] = $accountId;
         $values['role'] = $role;
+        $values['events'] = [];
         $account = $this->build($values);
         array_push($this->accounts, $account);
         return $account;
@@ -68,17 +71,33 @@ class AccountRepository extends Repository
         $rows = $this->db->retrieve(SQL::retrieve_all_users,[]);
         foreach ($rows as $row){
             $role = $this->roles->retrieve('id',$row['role']);
+            $events = $this->getEvents($row['idattendee']);
             $id = $row['idattendee'];
             unset($row['role']);
             unset($row['idattendee']);
+            $row['events'] = $events;
             $row['role'] = $role;
             $row['id'] = $id;
             $account = $this->build($row);
             array_push($this->accounts,$account);
         }
     }
+    protected function getEvents($accId){
+        $events = [];
+        $allEvents = $this->events->retrieveAll();
+        foreach($allEvents as $event){
+            $registrations = $event->registrations;
+            foreach($registrations as $registration){
+                $attendeeId = $registration->attendee;
+                if($accId == $attendeeId){
+                    array_push($events,$event);
+                }
+            }
+        }
+        return $events;
+    }
     public function build($values){
-        return new Account($values['id'],$values['name'],$values['password'],$values['role']);
+        return new Account($values['id'],$values['name'],$values['password'],$values['role'],$values['events']);
     }
     public function buildUpdateQuery($id,$values){
         $query = SQL::UPDATE.PROP::USER.SQL::SET;

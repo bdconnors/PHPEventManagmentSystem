@@ -1,14 +1,15 @@
 <?php
 
-require_once './interface/IComponent.php';
-class Item implements IComponent {
+class Item {
     public $id;
     public $label;
-    public function __construct($id,$label){
+    public $type;
+    public function __construct($id,$label,$type){
         $this->id = $id;
         $this->label = $label;
+        $this->type = $type;
     }
-    public function html(){
-        return "<a class='dropdown-item' href='#' id='{$this->id}'>$this->label</a>";
+    public function __toString(){
+        return "<a class='dropdown-item' href='/{$this->type}?id={$this->id}' id='{$this->id}'>$this->label</a>";
     }
 }

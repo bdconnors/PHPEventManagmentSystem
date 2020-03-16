@@ -2,8 +2,7 @@
 
 require_once './view/component/AccountPanel.php';
 require_once './view/component/MenuPanel.php';
-require_once './interface/IComponent.php';
-class NavigationBar implements IComponent {
+class NavigationBar {
     public AccountPanel $accountPanel;
     public MenuPanel $menuPanel;
     public function __construct(){
@@ -16,14 +15,14 @@ class NavigationBar implements IComponent {
     public function setAccount($account){
         $this->accountPanel->setAccount($account);
     }
-    public function html(){
+    public function __toString(){
         $html = "<nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
         <a class='navbar-brand mx-auto' href='/dashboard'>Event Management System</a>
         <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='.dual-collapse2'>
             <span class='navbar-toggler-icon'></span>
         </button>";
-        $html .= $this->menuPanel->html();
-        $html .= $this->accountPanel->html();
+        $html .= $this->menuPanel;
+        $html .= $this->accountPanel;
         $html .= "</nav>";
         return $html;
     }

@@ -1,7 +1,7 @@
 <?php
 
 
-class Action implements IComponent {
+class Action{
     public $title;
     public $description;
     public $img;
@@ -13,7 +13,7 @@ class Action implements IComponent {
         $this->href = $href;
     }
 
-    public function html(){
+    public function __toString(){
         return "<div class='col'>
                 <div class='card' style='width: 18rem;'>
                     <a href='{$this->href}'><img src='{$this->img}' class='card-img-top'></a>

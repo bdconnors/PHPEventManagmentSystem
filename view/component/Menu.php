@@ -1,8 +1,8 @@
 <?php
 require_once './view/component/Options.php';
 require_once './view/component/TabbedOptions.php';
-require_once './interface/IComponent.php';
-class Menu implements IComponent {
+
+class Menu  {
 
     public $id;
     public $label;
@@ -15,10 +15,10 @@ class Menu implements IComponent {
     public function addOptionGroup($id,$label,$options,$default = 'None'){
         array_push($this->options,new TabbedOptions($id,$label,$options,$default));
     }
-    public function addOptions($id,$label,$options){
-        array_push($this->options,new Options($id,$label,$options));
+    public function addOptions($id,$label,$options,$default = 'None'){
+        array_push($this->options,new Options($id,$label,$options,$default));
     }
-    public function html(){
+    public function __toString(){
         $html = "<li class='nav-models dropdown'>
                     <a class='nav-link dropdown-toggle' href='#'
                     id='{$this->id}NavbarDropdown' role='button' data-toggle='dropdown'
@@ -27,7 +27,7 @@ class Menu implements IComponent {
                     </a> 
                     <div class='dropdown-menu' aria-labelledby='{$this->id}NavbarDropdown'>";
         foreach($this->options as $option){
-            $html .= $option->html();
+            $html .= $option;
         }
         $html.="</div><li>";
         return $html;

@@ -2,9 +2,9 @@
 
 require_once('./interface/IResponse.php');
 class Response implements IResponse {
-    public function __construct(){
-        $this->content = "";
-    }
+
+    public function __construct(){}
+
     public function send($content){
         echo $content;
     }
@@ -16,6 +16,9 @@ class Response implements IResponse {
     }
     public function sendFile($location){
         readfile($location);
+    }
+    public function render(ITemplate $template){
+        echo $template;
     }
 
 
