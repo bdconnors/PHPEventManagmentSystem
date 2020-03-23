@@ -1,6 +1,6 @@
 <?php
 
-class Item {
+class MenuItem {
     public $id;
     public $label;
     public $type;

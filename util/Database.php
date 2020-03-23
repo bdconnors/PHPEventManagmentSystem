@@ -15,6 +15,7 @@ class Database extends PDO {
     }
 
     public function create($statement,$params){
+        var_dump($params);
         $stmt = $this->prepare($statement);
         $stmt->execute($params);
         return $this->lastInsertId();

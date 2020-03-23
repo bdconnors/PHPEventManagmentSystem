@@ -17,7 +17,7 @@ class NavigationBar {
     }
     public function __toString(){
         $html = "<nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
-        <a class='navbar-brand mx-auto' href='/dashboard'>Event Management System</a>
+        <a class='navbar-brand mx-auto' href='/'>Event Management System</a>
         <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='.dual-collapse2'>
             <span class='navbar-toggler-icon'></span>
         </button>";

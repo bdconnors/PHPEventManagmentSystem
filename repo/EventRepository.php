@@ -4,78 +4,60 @@ require_once('./model/Event.php');
 require_once('./model/Registration.php');
 require_once('./model/Session.php');
 class EventRepository extends Repository {
-    protected array $events;
     protected VenueRepository $venues;
-    public function __construct(Database $db,$venues){
+    protected SessionRepository $sessions;
+    protected RegistrationRepository $registrations;
+    protected AccountRepository $accounts;
+    protected array $events;
+    public function __construct(Database $db,$venues,$sessions,$registrations,$accounts){
         parent::__construct($db);
         $this->venues = $venues;
+        $this->sessions = $sessions;
+        $this->registrations = $registrations;
+        $this->accounts = $accounts;
         $this->events = array();
         $this->load();
     }
     public function load(){
         $eventRows = $this->db->retrieve(SQL::retrieve_all_events,[]);
-        $managedEventRows = $this->db->retrieve(SQL::retrieve_all_managed_events,[]);
-        $registrationRows = $this->db->retrieve(SQL::retrieve_all_registrations,[]);
-        $sessionRows = $this->db->retrieve(SQL::retrieve_all_sessions,[]);
         foreach ($eventRows as $row){
             $id = $row['idevent'];
             $venueId = $row['venue'];
             unset($row['idevent']);
             unset($row['venue']);
             $row['id'] = $id;
-            $row['venue'] = $this->venues->retrieve('id',$venueId)[0];
-            $row['manager'] = $this->getManager($row,$managedEventRows);
-            $row['registrations'] = $this->getRegistrations($row,$registrationRows);
-            $row['sessions'] = $this->getSessions($row,$sessionRows);
+            $row['venue'] = $this->getEventVenue($venueId);
+            $row['manager'] = $this->getEventManager($id);
+            $row['registrations'] = $this->registrations->retrieve('event',$row['id']);
+            $row['sessions'] = $this->sessions->retrieve('event',$id);
             $event = $this->build($row);
             array_push($this->events,$event);
         }
+
     }
-    public function getSessions($eventRow,$sessRows){
-        $sessions = [];
-        foreach($sessRows as $row){
-            $id = $eventRow['id'];
-            if($row['event'] == $id){
-                $id = $row['idsession'];
-                $name = $row['name'];
-                $datestart = $row['startdate'];
-                $dateend = $row['enddate'];
-                $allowed = $row['numberallowed'];
-                $event = $row['event'];
-                $session =  new Session($id,$name,$datestart,$dateend,$allowed,$event);
-                array_push($sessions,$session);
-            }
+    public function getEventVenue($venueId){
+        if($venueId!= -1) {
+            return $this->venues->retrieve('id', $venueId)[0];
+        }else{
+            return $this->venues->getDefault();
         }
-        return $sessions;
     }
-    public function getRegistrations($eventRow,$regRows){
-        $registrations = [];
-        foreach($regRows as $row){
-            $id = $eventRow['id'];
-            if($row['event'] == $id){
-                $name = $eventRow['name'];
-                $attendee = $row['attendee'];
-                $paid = $row['paid'];
-                $registration =  new Registration($id,$name,$attendee,$paid);
-                array_push($registrations,$registration);
+    public function getEventManager($eventId){
+        $result = $this->db->retrieve(SQL::retrieve_event_manager,['id'=>$eventId]);;
+        if(!isset($result[0])) {
+            $managerId = $result['manager'];
+            if ($managerId != -1) {
+                return $this->accounts->retrieve('id', $managerId);
+            } else {
+                return $this->accounts->getDefault();
             }
+        }else{
+            return $this->accounts->getDefault();
         }
-        return $registrations;
-    }
-    public function getManager($eventRow,$managedRows){
-        $manager = -1;
-        foreach($managedRows as $row){
-            $id = $eventRow['id'];
-            if($row['event'] == $id){
-                $manager = $row['manager'];
-            }
-        }
-        return $manager;
     }
     public function retrieveAll(){
         return $this->events;
     }
-
     public function retrieve($prop, $value){
         $results = [];
         foreach($this->events as $e){
@@ -88,18 +70,37 @@ class EventRepository extends Repository {
     }
 
     public function create($values){
-        // TODO: Implement create() method.
+        $managerValues = array('manager'=>$values['manager']);
+        unset($values['nameConfirm']);
+        unset($values['manager']);
+        $eventId = $this->db->create(SQL::create_event,$values);
+        $managerValues['event'] = $eventId;
+        $this->db->create(SQL::create_event_manager, $managerValues);
+        $values['manager'] = $this->getEventManager($eventId);
+        $values['registrations'] = [];
+        $values['sessions'] = [];
+        $values['id'] = $eventId;
+        $event = $this->build($values);
+        array_push($this->events,$event);
+        return $event;
     }
-
     public function update($id,$values){
         // TODO: Implement update() method.
     }
-
-    public function delete($prop, $value){
-        // TODO: Implement delete() method.
+    public function delete($id){
+        $this->sessions->deleteEventSessions($id);
+        $this->registrations->deleteEventRegistrations($id);
+        $this->db->delete(SQL::delete_event_management,array('id'=>$id));
+        $results = $this->db->delete(SQL::delete_event,array('id'=>$id));
+        for($i = 0; $i < count($this->events); $i++){
+            if($this->events[$i]->id == $id){
+                unset($this->events[$i]);
+            }
+        }
+        return $results;
     }
-
     public function build($values){
+
         return new Event($values['id'],
             $values['name'],
             $values['datestart'],

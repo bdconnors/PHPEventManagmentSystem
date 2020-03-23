@@ -1,52 +1,51 @@
 <?php
 
-require_once './view/EventProfile.php';
-require_once './view/EventList.php';
+require_once './view/HomePage.php';
+//list template
+require_once './view/list/EventList.php';
+require_once'./view/list/RegistrationList.php';
+require_once'./view/list/AccountList.php';
+require_once './view/list/VenueList.php';
+//profile template
+require_once './view/profile/EventProfile.php';
+require_once './view/profile/VenueProfile.php';
+//form template
 require_once './view/LoginForm.php';
-require_once './view/Dashboard.php';
-require_once './view/VenueProfile.php';
-require_once './view/VenueList.php';
 require_once './view/CreateAccountForm.php';
+require_once './view/CreateEventForm.php';
+require_once './view/CreateVenueForm.php';
+
 class TemplateService {
 
-    protected Validation $validation;
-    public function __construct($validation){
-        $this->validation = $validation;
+    protected ListFactory $lists;
+    protected ProfileFactory $profiles;
+    public function __construct($lists,$profiles){
+        $this->lists = $lists;
+        $this->profiles = $profiles;
     }
-    public function getAccountCreationForm(IRequest $request){
-        return new CreateAccountForm($request->getUser());
+    public function getHomePage($user){
+        return new HomePage($user);
     }
-    public function getDashboardTemplate(IRequest $request){
-        return new Dashboard($request->getUser());
+    public function getError($msg = 'Internal Server Error'){
+        return new ErrorPage($msg);
     }
-    public function getEventsTemplate(IRequest $request){
-        $view = new EventList($request->getUser(),$_SERVER['EVENT_REPO']->retrieveAll());
-        if($request->hasParam('id')) {
-            $id = $request->query('id');
-            $validEvent = $this->validation->validateNumber($id);
-            if ($validEvent) {
-                $event = $_SERVER['EVENT_REPO']->retrieve('id', $id)[0];
-                $user = $request->getUser();
-                $view = new EventProfile($user, $event);
-            }
-        }
-        return $view;
+    public function getLogin($err = ''){
+        return new LoginForm($err);
     }
-    public function getVenuesTemplate(IRequest $request){
-        $view = new VenueList($request->getUser(),$_SERVER['VENUE_REPO']->retrieveAll());
-        if($request->hasParam('id')) {
-            $id = $request->query('id');
-            $validVenue = $this->validation->validateNumber($id);
-            if ($validVenue) {
-                $venue = $_SERVER['VENUE_REPO']->retrieve('id', $id)[0];
-                $user = $request->getUser();
-                $view = new VenueProfile($user, $venue);
-            }
-        }
-        return $view;
+    public function getCreateAccount($user){
+        return new CreateAccountForm($user);
     }
-    public function getLoginForm(){
-        return new LoginForm('');
+    public function getCreateVenue($user){
+        return new CreateVenueForm($user);
+    }
+    public function getCreateEvent($user,$venues,$managers){
+        return new CreateEventForm($user,$venues,$managers);
+    }
+    public function getProfile($type,$user,$item){
+        return $this->profiles->make($type,$user,$item);
+    }
+    public function getList($type,$user,$items){
+        return $this->lists->make($type,$user,$items);
     }
 
 }

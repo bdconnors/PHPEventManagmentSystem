@@ -4,8 +4,8 @@ require_once './view/component/Options.php';
 class TabbedOptions extends Options {
     public $default;
     public function __construct($id, $label, $options,$defaultLabel){
-        parent::__construct($id, $label, $options);
-        $this->default = new Item("{$this->id}Default",$defaultLabel,$this->id);
+        parent::__construct($id, $label, $options,$defaultLabel);
+        $this->default = new MenuItem("{$this->id}Default",$defaultLabel,$this->id);
     }
     public function __toString(){
         $html = "<div class='dropdown-header'>{$this->label}</div>";

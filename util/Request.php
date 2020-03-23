@@ -7,7 +7,7 @@ class Request implements IRequest
     public $method;
     function __construct() {
         $this->url = $_SERVER['REQUEST_URI'];
-        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->method = $this->getRequestMethod();
     }
     public function getParsedUrl(){
         return parse_url($this->url);
@@ -29,13 +29,32 @@ class Request implements IRequest
         $query = $this->getQuery();
         return isset($query[$param]);
     }
+    public function getRequestMethod(){
+        $method = 'GET';
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $body = array();
+            parse_str(file_get_contents('php://input'), $body);
+            if (isset($body['_method'])) {
+                $method = $body['_method'];
+            } else {
+                $method = 'POST';
+            }
+        }
+        return $method;
+    }
     public function getBody() {
-        if($this->method == "POST"){
+        if($this->method == 'POST'){
             return $_POST;
-        }else if($this->method == 'GET'){
-            return $_GET;
+        }else if($this->method == 'PUT'){
+            parse_str(file_get_contents('php://input'), $_PUT);
+            unset($_PUT['_method']);
+            return $_PUT;
+        }else if($this->method == 'DELETE'){
+            parse_str(file_get_contents('php://input'), $_DELETE);
+            unset($_DELETE['_method']);
+            return $_DELETE;
         }else{
-            return $_REQUEST;
+            return $_GET;
         }
     }
     public function getJSONBody(){

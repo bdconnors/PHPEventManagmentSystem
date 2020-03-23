@@ -14,21 +14,26 @@ class EventList implements ITemplate {
     {
         $list = new Head('Events');
         $list.= new Navigation($this->user);
+        $addEvent="window.location.href='/events/create'";
         if($this->user->role->id == 1 || $this->user->role->id == 2){
-            $list .= "<button type='button' class='btn btn-secondary'>
+            $list .= "<button type='button' class='btn btn-secondary' onclick=$addEvent>
                             <i class='fa fa-plus'></i> New Event
                         </button>";
         }
         foreach($this->events as $event){
+            $viewEvent="window.location.href='/events?id={$event->id}'";
             $list .= "<div class='card' style='width: 18rem;'>
   <div class='card-body'>
     <h5 class='card-title'>{$event->name}</h5>
     <h6 class='card-subtitle mb-2 text-muted'>Date: {$event->dateStart}</h6>
-    <a href='#' class='card-link'>Register</a>
-    <a href='/events?id={$event->id}' class='card-link'>View</a>";
-            if($this->user->role->id == 1 || $this->user->role->id == 2){
-                $list .= "<a href='#' class='card-link'>Remove</a>
-                          <a href='#' class='card-link'>Edit</a>";
+    <button class='btn btn-secondary' onclick=$viewEvent>View</button>";
+            if($this->user->role->id == 1 || $this->user->role->id == 2||$event->manager == $this->user->id){
+                $list .= "<form id='eventDelete' method='POST' action='/events/delete'>
+                            <input name='_method' type='hidden' value='DELETE' />
+                            <input name='id' type='hidden' value='{$event->id}'/>
+                            <button type='submit' class='btn btn-secondary'>Remove</button>
+                         </form>
+                         <button class='btn btn-secondary' class='card-link'>Edit</button>";
             }
   $list .= "</div>
 </div>";

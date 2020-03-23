@@ -40,11 +40,13 @@ class RoleRepository extends Repository {
         // TODO: Implement update() method.
     }
 
-    public function delete($prop, $value)
+    public function delete($id)
     {
         // TODO: Implement delete() method.
     }
-
+    public function getDefault(){
+        return new Role(-1,'none');
+    }
     public function build($values){
         return new Role($values['idrole'],$values['name']);
     }

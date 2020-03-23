@@ -18,19 +18,42 @@ class Validation {
         }
         return $valid;
     }
-    public function validateNumber($value){
+    public function validateAnyInteger($value){
+        $valid = true;
+        $value = $this->sanitization->sanitize($value);
+        $reg = "/^-?\d+$/";
+        $validInt = preg_match($reg,$value);
+        $isAttack = $this->attackAttempted($value);
+        if(!$validInt|| $isAttack){
+            $valid = false;
+        }
+        return $valid;
+    }
+    public function validatePosInteger($value){
         $valid = true;
         $value = $this->sanitization->sanitize($value);
         $reg = "/^[0-9]*$/";
-        $validNumber = preg_match($reg,$value);
+        $validInt = preg_match($reg,$value);
         $isAttack = $this->attackAttempted($value);
-        if(!$validNumber|| $isAttack){
+        if(!$validInt|| $isAttack){
+            $valid = false;
+        }
+        return $valid;
+    }
+    public function validateAlphaNumericSpaces($value){
+        $valid = true;
+        $value = $this->sanitization->sanitize($value);
+        $reg = "/^[a-z\d\-_\s]+$/i";
+        $validAlphaNumSpc = preg_match($reg,$value);
+        $isAttack = $this->attackAttempted($value);
+        if(!$validAlphaNumSpc||$isAttack){
             $valid = false;
         }
         return $valid;
     }
     public function validateAlphaNumeric($value){
         $valid = true;
+        $value = $this->sanitization->sanitize($value);
         $reg="/^[a-z0-9]+$/i";
         $validAlphaNum = preg_match($reg,$value);
         $isAttack = $this->attackAttempted($value);
@@ -45,7 +68,7 @@ class Validation {
         $reg = "/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/";
         $validDate = preg_match($reg,$value);
         $isAttack = $this->attackAttempted($value);
-        if(!$valid || $isAttack){
+        if(!$validDate || $isAttack){
             $valid = false;
         }
         return $valid;

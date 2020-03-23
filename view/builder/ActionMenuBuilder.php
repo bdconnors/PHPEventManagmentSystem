@@ -22,17 +22,17 @@ class ActionMenuBuilder {
     protected function buildAdminActions(){
         $this->menu->add('Accounts','View and manage attendee accounts','./img/attendeeCap.jpeg','/accounts');
         $this->menu->add('Venues','View and manage venues','./img/venueCap.jpeg','/venues');
-        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/events');
+        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/registrations');
         $this->menu->add('Events','View and manage events','./img/eventCap.jpeg','/events');
 
     }
     protected function buildManagerActions(){
-        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/events');
+        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/registrations');
         $this->menu->add('Events','View and manage assigned events','./img/eventCap.jpeg','/events');
 
     }
     protected function buildAttendeeActions(){
-        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/events');
+        $this->menu->add('Registrations',"View your event registrations",'./img/eventCap.jpeg','/registrations');
         $this->menu->add('Events','View all events','./img/eventCap.jpeg','/events');
     }
 }

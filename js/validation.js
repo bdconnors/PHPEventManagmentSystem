@@ -1,47 +1,153 @@
-function validateLogin(){
-    let submit;
+function displayErrors(errors){
+    const err = document.getElementById('err');
+    for(let i = 0; i < errors.length; i++){
+        let errorNode = document.createTextNode(errors[i]);
+        err.appendChild(errorNode);
+        if(i !== errors.length - 1){
+            let breakNode = document.createElement('br');
+            err.appendChild(breakNode);
+            err.appendChild(breakNode);
+        }
+    }
+}
+function clearErrors(){
     const err = document.getElementById('err');
     err.innerText = '';
+}
+function valuesMatch(value1,value2){
+    return value1 === value2;
+}
+function validateLogin(){
+    clearErrors();
+    let submit = false;
+    let errors = [];
     const name = document.getElementById('name').value;
     const password = document.getElementById('password').value;
     const validName = validateAlphaNumeric(name);
     const validPass = validateAlphaNumeric(password);
     if(!validName || !validPass){
-        err.innerText = 'Invalid user name or password';
+        errors.push('Invalid user name or password');
         submit = false;
     }else{
         submit = true;
+    }
+    if(!submit){
+        displayErrors(errors);
+    }
+    return submit;
+}
+function validateCreateVenue(){
+    clearErrors();
+    let submit = true;
+    let errors = [];
+    const name = document.getElementById('name').value;
+    const nameConfirm = document.getElementById('nameConfirm').value;
+    const capacity = document.getElementById('capacity').value;
+    const validCapacity = validatePosInteger(capacity);
+    const validName = validateAlphaNumeric(name);
+    if(!valuesMatch(nameConfirm,name)){
+        errors.push('Venue names do not match');
+        submit = false;
+    }
+    if(!validName){
+        errors.push('Invalid name');
+        submit = false;
+    }
+    if(!validCapacity){
+        errors.push('Invalid capacity');
+        submit = false;
+    }
+    if(!submit){
+        displayErrors(errors);
+    }
+    return submit;
+}
+function validateCreateEvent(){
+
+    clearErrors();
+
+    let submit = true;
+    let errors = [];
+    const dateStart = document.getElementById('datestart').value;
+    const dateEnd = document.getElementById('dateend').value;
+    const manager = document.getElementById('manager').value;
+    const venue = document.getElementById('venue').value;
+    const name = document.getElementById('name').value;
+    const nameConfirm = document.getElementById('nameConfirm').value;
+    const capacity = document.getElementById('numberallowed').value;
+    const validName = validateAlphaNumeric(name);
+    const validDateStart = validateDate(dateStart);
+    const validDateEnd = validateDate(dateEnd);
+    const validManager = validateAnyInteger(manager);
+    const validVenue = validateAnyInteger(venue);
+    const validCapacity = validatePosInteger(capacity);
+
+    if(!valuesMatch(nameConfirm,name)){
+        errors.push('Event names do not match');
+        submit = false;
+    }
+    if(!validName){
+        errors.push('Invalid event name');
+        submit = false;
+    }
+    if(!validDateStart){
+        errors.push('Invalid start date');
+        submit = false;
+    }
+    if(!validDateEnd){
+        errors.push('Invalid end date');
+        submit = false;
+    }
+    if(!validVenue){
+        errors.push('Invalid venue');
+        submit = false;
+    }
+    if(!validManager){
+        errors.push('Invalid manager');
+        submit = false;
+    }
+    if(!validCapacity){
+        errors.push('Invalid capacity');
+        submit = false;
+    }
+    if(!submit){
+        displayErrors(errors);
     }
     return submit;
 }
 function validateRegistration(){
-    let submit = false;
-    const err = document.getElementById('err');
-    err.innerText = '';
+
+    clearErrors();
+
+    let submit = true;
+    let errors = [];
     const name = document.getElementById('name').value;
     const nameConfirm = document.getElementById('nameConfirm').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
-    const namesMatch = name === nameConfirm;
-    const passwordsMatch = password === passwordConfirm;
     const validName = validateAlphaNumeric(name);
     const validPassword = validateAlphaNumeric(password);
-    if(!namesMatch){
-        err.innerText = 'User names do not match';
+
+    if(!valuesMatch(nameConfirm,name)){
+        errors.push('User names do not match');
         submit = false;
-    }else if(!passwordsMatch){
-        err.innerText = 'Passwords do not match';
-        submit = false;
-    }else if(!validName){
-        err.innerText = 'Invalid User Name';
-        submit = false;
-    }else if(!validPassword){
-        err.innerText = 'Invalid Password';
-        submit = false;
-    }else{
-        submit = true;
     }
-    console.log(submit);
+    if(!valuesMatch(passwordConfirm,password)){
+        errors.push('Passwords do not match');
+        submit = false;
+    }
+    if(!validName){
+        errors.push('Invalid User Name');
+        submit = false;
+    }
+    if(!validPassword){
+        errors.push('Invalid Password');
+        submit = false;
+    }
+
+    if(!submit){
+        displayErrors(errors);
+    }
     return submit;
 }
 function validateAlphaNumeric(value){
@@ -66,7 +172,18 @@ function validateAlpha(value) {
     }
     return valid;
 }
-function validateNumber(value){
+function validateAnyInteger(value){
+    let valid = true;
+    value = sanitize(value);
+    const reg = /^-?d+$/;
+    let validNumber = reg.test(value);
+    let isAttack = attackAttempted(value);
+    if(!validNumber|| isAttack){
+        valid = false;
+    }
+    return valid;
+}
+function validatePosInteger(value){
     let valid = true;
     value = sanitize(value);
     const reg = /^[0-9]*$/;

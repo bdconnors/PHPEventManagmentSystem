@@ -36,17 +36,31 @@ class VenueRepository extends Repository {
     }
 
     public function create($values){
-        // TODO: Implement create() method.
+        unset($values['nameConfirm']);
+        $venueId = $this->db->create(SQL::create_venue,$values);
+        $values['id'] = $venueId;
+        $venue = $this->build($values);
+        array_push($this->venues,$venue);
+        return $venue;
     }
 
     public function update($id,$values){
-        // TODO: Implement update() method.
+
     }
 
-    public function delete($prop, $value){
-        // TODO: Implement delete() method.
+    public function delete($id){
+        $results = $this->db->delete(SQL::delete_venue,array('id'=>$id));
+        $this->db->update(SQL::update_event_venue,array('venue'=>-1,'id'=>$id));
+        for($i = 0; $i < count($this->venues); $i++){
+            if($this->venues[$i]->id == $id){
+                unset($this->venues[$i]);
+            }
+        }
+        return $results;
     }
-
+    public function getDefault(){
+        return new Venue(-1,'To Be Determined',-1);
+    }
     public function build($values){
         return new Venue($values['id'],$values['name'],$values['capacity']);
     }

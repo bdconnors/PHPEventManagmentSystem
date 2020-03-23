@@ -1,14 +1,14 @@
 <?php
 
 require_once './view/component/NavigationBar.php';
-require_once './view/component/Item.php';
+require_once './view/component/MenuItem.php';
 require_once './view/component/Menu.php';
 class NavigationBuilder {
     public NavigationBar $nav;
     public function __construct(){
         $this->nav = new NavigationBar();
     }
-    public function buildTabbedMenu($id,$label,$groups){
+    public function buildTabbedDropDowns($id,$label,$groups){
         $dropDown = new Menu($id,$label);
         foreach ($groups as $key=>$value){
             $items = $this->makeItemList($value,$id);
@@ -16,7 +16,12 @@ class NavigationBuilder {
         }
         $this->nav->addMenu($dropDown);
     }
-    public function buildMenu($id,$label,$entities)
+    public function buildNavItems($items){
+        foreach($items as $item){
+            $this->nav->addMenu($item);
+        }
+    }
+    public function buildDropDowns($id,$label,$entities)
     {
         $dropDown = new Menu($id, $label);
         $items = $this->makeItemList($entities,$id);
@@ -32,7 +37,7 @@ class NavigationBuilder {
     protected function makeItemList($entities,$type){
         $items = [];
         foreach($entities as $entity){
-            array_push($items,new Item($entity->id,$entity->name,$type));
+            array_push($items,new MenuItem($entity->id,$entity->name,$type));
         }
         return $items;
     }

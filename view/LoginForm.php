@@ -15,13 +15,28 @@ class LoginForm implements ITemplate{
         $foot = new Foot(array('validation','sanitization'));
         $form = $head;
         $form .= new Navigation();
-        $form .= "<p style='color:red' id='err'>{$this->errMessage}</p>
-                <form id='loginForm' method='post' onsubmit='validateLogin()'>
-                    Account Name: <input type='text' name='name' id='name'/>
-                    Password: <input type='password' name='password' id='password'/>
-                    <br/>
-                    <input type='submit' value='Login'/>              
-                </form>";
+        $form .= "<div class='container mx-auto'>
+                    <p style='color:red' id='err'>{$this->errMessage}</p>
+                    <form id='loginForm' method='post' onsubmit='validateLogin()'>
+                        <div class='form-group row'>
+                            <div class='col-lg-3'>
+                                <label for='name'>Account Name</label>
+                                <input class='form-control' type='text' name='name' id='name'/>
+                            </div>
+                        </div>
+                         <div class='form-group row'>
+                            <div class='col-lg-3'>
+                                <label for='name'>Password</label>
+                                <input class='form-control' type='password' name='password' id='password'/>
+                            </div>
+                         </div>
+                        <div class='form-group row'>
+                            <div class='col-lg-3'>
+                                <button type='submit' class='btn btn-secondary'/>Login</button>
+                            </div>
+                        </div>              
+                    </form>
+                  </div>";
         $form .= $foot;
         return $form;
     }

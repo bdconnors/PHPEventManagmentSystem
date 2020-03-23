@@ -16,7 +16,7 @@ class Authorization {
             if($authorized){
                 $route->resolve($request,$response);
             }else{
-                $response->redirect('/dashboard');
+                $response->redirect('/');
             }
         }else {
             $request->destroySession();

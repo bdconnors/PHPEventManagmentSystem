@@ -1,6 +1,7 @@
 <?php
 
 require_once './view/builder/NavigationBuilder.php';
+require_once './view/component/NavItem.php';
 class Navigation implements ITemplate {
     public $user;
     public function __construct($user = null){
@@ -30,11 +31,23 @@ class Navigation implements ITemplate {
         return $builder->produce();
     }
     protected function makeAttendeeNav(NavigationBuilder $builder){
-        $builder->buildMenu('events','My Registrations',$this->user->events);
+        $pages = [
+            new NavItem('Home','/'),
+            new NavItem('Events','/events'),
+            new NavItem('My Registrations','/registrations')
+        ];
+        $builder->buildNavItems($pages);
+        //$builder->buildMenu('events','My Registrations',$this->user->events);
         return $builder->produce();
     }
     protected function makeManagerNav(NavigationBuilder $builder){
-        $events = $this->user->events;
+        $pages = [
+            new NavItem('Home','/'),
+            new NavItem('Events','/events'),
+            new NavItem('My Registrations','/registrations')
+        ];
+        $builder->buildNavItems($pages);
+        /**$events = $this->user->events;
         $managed = array();
         $registered = array();
         foreach($events as $event){
@@ -45,18 +58,26 @@ class Navigation implements ITemplate {
             }
         }
         $builder->buildMenu('events','Managed Events',$managed);
-        $builder->buildMenu('events','My Registrations',$registered);
+        $builder->buildMenu('events','My Registrations',$registered);**/
 
         return $builder->produce();
     }
      protected function makeAdminNav(NavigationBuilder $builder){
-        $builder->buildTabbedMenu('accounts','Accounts',$this->getAccounts());
+         $pages = [
+             new NavItem('Home','/'),
+             new NavItem('Accounts','/accounts'),
+             new NavItem('Events','/events'),
+             new NavItem('Venues','/venues'),
+             new NavItem('My Registrations','/registrations')
+         ];
+         $builder->buildNavItems($pages);
+        /**$builder->buildTabbedMenu('accounts','Accounts',$this->getAccounts());
         $builder->buildMenu('events','Events',$this->getEvents());
         $builder->buildMenu('venues','Venues',$this->getVenues());
-        $builder->buildMenu('events','My Registrations',$this->user->events);
+        $builder->buildMenu('events','My Registrations',$this->user->events);**/
         return $builder->produce();
     }
-    protected function getEvents(){
+    /**protected function getEvents(){
         return $_SERVER['EVENT_REPO']->retrieveAll();
 
     }
@@ -70,5 +91,5 @@ class Navigation implements ITemplate {
         $managers = $_SERVER['ACCOUNT_REPO']->retrieve('role',3);
         $attendees = $_SERVER['ACCOUNT_REPO']->retrieve('role',4);
         return array('Administrators'=>$admins,'Managers'=>$managers,'Attendees'=>$attendees);
-    }
+    }**/
 }

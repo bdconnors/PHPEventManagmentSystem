@@ -16,7 +16,7 @@ abstract class Repository{
 
     abstract public function update($id,$values);
 
-    abstract public function delete($prop, $value);
+    abstract public function delete($id);
 
     abstract public function build($values);
 

@@ -11,20 +11,51 @@ class CreateAccountForm implements ITemplate{
     public function __toString(){
         $form = new Head('Create Account');
         $form .= new Navigation($this->user);
-        $form .= "<p style='color:red' id='err'></p>
+        $form .= "<div class='container mx-auto'>
+                    <p style='color:red' id='err'></p>
                 <form id='registrationForm' method='post' onsubmit='return validateRegistration()'>
-                    Account Type: <select id='role' name='role'>     
-                        <option selected value='4'>Attendee</option>
-                        <option value='3'>Event Manager</option>
-                        <option value='2'>Admin</option>
-                    </select>
-                    Account Name: <input type='text'  name='name' id='name'/>
-                    Confirm Account Name: <input type='text' name='nameConfirm' id='nameConfirm'/>
-                    Password: <input type='password' name='password' id='password'/>
-                    Confirm Password: <input type='password' name='passwordConfirm' id='passwordConfirm'/>
-                    <input type='submit' value='Submit'/>
-                    <input type='reset' value='Reset'/>
-                </form>";
+                    <div class='form-group row'>
+                        <div class='col-md-6'>
+                            <label for='role'>Account Type:</label>
+                            <select class='form-control' id='role' name='role'>     
+                                <option selected value='4'>Attendee</option>
+                                <option value='3'>Event Manager</option>
+                                <option value='2'>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col-md-6'>
+                            <label for='name'>Account Name:</label>         
+                            <input class='form-control' type='text'  name='name' id='name'/>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col-md-6'>
+                            <label for='nameConfirm'>Confirm Account Name:</label>  
+                            <input type='text' class='form-control' name='nameConfirm' id='nameConfirm'/>
+                        </div>
+                    </div>
+                    <div class='form-group row'> 
+                        <div class='col-md-6'>    
+                            <label for='password'>Password:</label>  
+                            <input class='form-control' type='password' name='password' id='password'/>
+                        </div>
+                    </div>
+                    <div class='form-group row'>
+                        <div class='col-md-6'>
+                            <label for='passwordConfirm'>Password:</label>  
+                            <input type='password' class='form-control' name='passwordConfirm' id='passwordConfirm'/>
+                        </div>
+                     </div>
+                     <div class='form-group row'>
+                        <div class='col-md-6'>
+                            <button class='btn btn-secondary' type='submit'>Submit</button>     
+                            <button class='btn btn-secondary' type='reset'>Reset</button>
+                        </div>
+                     </div>
+                </form>
+                </div>";
         $form .= new Foot(array('navbar','validation','sanitization'));
         return $form;
     }

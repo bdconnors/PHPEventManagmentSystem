@@ -34,7 +34,7 @@ class Router{
             $route = $this->routes[$method][$path];
             $this->auth->authorize($route,$request,$response);
         }else{
-            $response->redirect('/dashboard');
+            var_dump($request);
         }
     }
 
