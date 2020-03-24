@@ -14,38 +14,45 @@ class EventProfile implements ITemplate {
         $foot = new Foot(array('navbar'));
         $profile = $head;
         $profile .= $navigation;
+        //begin jumbo
         $profile .= "<div class='jumbotron jumbotron-fluid'>
-            <div class='container'>
-                <h1 class='display-4'>{$this->event->name}</h1>
-                    <p class='lead'><b>Venue:</b> {$this->event->venue->name}</p>
-                    <p class='lead'><b>Manager:</b> {$this->event->manager->name}</p>
-                    <p class='lead'><b>Number Allowed:</b> {$this->event->numberAllowed}</p>
-                    <p class='lead'><b>Start Date:</b> {$this->event->dateStart}</p>
-                    <p class='lead'><b>End Date:</b> {$this->event->dateEnd}</p>";
-                    $profile .= "<form>";
-                    if(!($this->event->isRegistered($this->user->id))) {
-                        $profile .=" <p class='lead'><b>Registration:</b></p>
-                        <input type='hidden' name='event' value='{$this->event->id}'/>
-                        <b>Available Sessions:</b>
-                        <br/>
-                        <br/>
-                        <select name='session'>";
-                        foreach ($this->event->sessions as $session) {
-                            $profile .= "<option value='{$session->id}'>{$session->name}</option>";
-                        }
-                        $profile .= "</select>
-                        <br/>
-                        <br/>
-                        <input type='submit' value='Register'>";
-                    }else{
-                        $registration = $this->event->getRegistration($this->user->id);
-                        $profile.="<input type='hidden' name='event' value='{$registration->id}'>
-                                   <input type='hidden' name='attendee' value='{$registration->attendee}'>
-                                   <p class='lead' style='color:green'><b>You are registered under session {$registration->session->name} for this event</b></p>
-                                   <button type='submit' class='btn btn-secondary'>Cancel Registration</button>";
-                    }
-        $profile .= "</form></div>
+                        <div class='container'>
+                            <h1>{$this->event->name}</h1>
+                            <p class='lead'><b>Venue:</b> {$this->event->venue->name}</p>
+                            <p class='lead'><b>Manager:</b> {$this->event->manager->name}</p>
+                            <p class='lead'><b>Number Allowed:</b> {$this->event->numberAllowed}</p>
+                            <p class='lead'><b>Start Date:</b> {$this->event->dateStart}</p>
+                            <p class='lead'><b>End Date:</b> {$this->event->dateEnd}</p>
+                        </div>";
+        $registered = $this->event->isRegistered($this->user->id);
+        if($registered){
+            $profile.="<div class='container'>
+                    <p class='lead' style='color:green'><b>You are registered for this event</b></p>
+                </div>";
+        }
+        $profile .= "<div class='container'>";
+        $profile .= "<div class='btn-group' role='group' aria-label='Registration Actions'>";
+        if(!$registered){
+            $profile .= " <form method='GET' action='/registrations/create'>
+                                <input name='event' type='hidden' value='{$this->event->id}'/>
+                                <input name='attendee' type='hidden' value='{$this->user->id}'/>
+                                <button class='btn btn-secondary' type='submit'>Register</button>
+                            </form>";
+        }
+        $profile .= "<form method='GET' action='/sessions'>
+                    <input name='event' type='hidden' value='{$this->event->id}'/>
+                    <button class='btn btn-secondary' type='submit'>View Sessions</button>
+                </form>
+                <form method='GET' action='/registrations'>
+                    <input name='event' type='hidden' value='{$this->event->id}'/>
+                    <button class='btn btn-secondary' type='submit'>View Attendees</button>
+                </form>
+            </div>
         </div>";
+        //end jumbo
+        $profile .= "</div>";
+
+
         $profile .= $foot;
         return $profile;
     }

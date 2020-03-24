@@ -28,12 +28,18 @@ class EventController {
         $view = $_SERVER['TEMPLATE_SERVICE']->getCreateEvent($request->getUser(),$venues,$managers);
         $response->render($view);
     }
+    static public function editForm(IRequest $request,IResponse $response){
+        $venues = $_SERVER['VENUE_REPO']->retrieveAll();
+        $managers = $_SERVER['ACCOUNT_REPO']->retrieve('role',3);
+        $view = $_SERVER['TEMPLATE_SERVICE']->getCreateEvent($request->getUser(),$venues,$managers);
+        $response->render($view);
+    }
     static public function create(IRequest $request,IResponse $response){
-        $_SERVER['ADMIN_SERVICE']->createEvent($request,$response);
+        $_SERVER['EVENT_SERVICE']->create($request,$response);
     }
     static public function delete(IRequest $request,IResponse $response){
-        $service = $_SERVER['ADMIN_SERVICE'];
-        $service->deleteEvent($request,$response);
+        $service = $_SERVER['EVENT_SERVICE'];
+        $service->delete($request,$response);
     }
 
 }

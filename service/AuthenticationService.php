@@ -5,20 +5,30 @@ class AuthenticationService {
 
     public function __construct(){}
 
-    public function authenticate($name,$password){
-        $result = false;
-        $exists = $_SERVER['ACCOUNT_REPO']->exists($name);
-        if($exists){
-            var_dump($_SERVER['ACCOUNT_REPO']->retrieve('name',$name));
-            $account = $_SERVER['ACCOUNT_REPO']->retrieve('name',$name)[0];
-            $correctHash = $account->getPassword();
-            $providedHash = $this->hashPassword($password);
-            $valid = $providedHash == $correctHash;
-            if($valid){
-                $result = $account;
+    public function authenticate(IRequest $request,IResponse $response){
+        $body = $request->getBody();
+        $validName = $_SERVER['VALIDATION']->validateAlphaNumeric($body['name']);
+        $validPass = $_SERVER['VALIDATION']->validateAlphaNumeric($body['password']);
+        $valid = $validName && $validPass;
+        if($valid) {
+            $exists = $_SERVER['ACCOUNT_REPO']->exists($body['name']);
+            if ($exists) {
+                $account = $_SERVER['ACCOUNT_REPO']->retrieve('name', $body['name'])[0];
+                $correctHash = $account->getPassword();
+                $providedHash = $this->hashPassword($body['password']);
+                $authenticated = $providedHash == $correctHash;
+                if ($authenticated) {
+                    $request->createSession($account);
+                    $response->redirect('/');
+                }else{
+                    $view = $_SERVER['TEMPLATE_SERVICE']->getLogin('Incorrect account name or password');
+                    $response->render($view);
+                }
+            }else{
+                $view = $_SERVER['TEMPLATE_SERVICE']->getLogin('Incorrect account name or password');
+                $response->render($view);
             }
         }
-        return $result;
     }
     public function hashPassword($plainText){
         return hash(PROP::HASH_ALG, $plainText);

@@ -13,7 +13,7 @@ class CreateAccountForm implements ITemplate{
         $form .= new Navigation($this->user);
         $form .= "<div class='container mx-auto'>
                     <p style='color:red' id='err'></p>
-                <form id='registrationForm' method='post' onsubmit='return validateRegistration()'>
+                <form id='createAccountForm' method='POST' onsubmit='return validateAccountCreation()'>
                     <div class='form-group row'>
                         <div class='col-md-6'>
                             <label for='role'>Account Type:</label>
@@ -44,7 +44,7 @@ class CreateAccountForm implements ITemplate{
                     </div>
                     <div class='form-group row'>
                         <div class='col-md-6'>
-                            <label for='passwordConfirm'>Password:</label>  
+                            <label for='passwordConfirm'>Confirm Password:</label>  
                             <input type='password' class='form-control' name='passwordConfirm' id='passwordConfirm'/>
                         </div>
                      </div>
@@ -56,7 +56,7 @@ class CreateAccountForm implements ITemplate{
                      </div>
                 </form>
                 </div>";
-        $form .= new Foot(array('navbar','validation','sanitization'));
+        $form .= new Foot(array('navbar','validation','sanitization','accountForms'));
         return $form;
     }
 

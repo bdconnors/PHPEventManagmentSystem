@@ -4,13 +4,16 @@
 class AccountController
 {
     static public function index(IRequest $request,IResponse $response){
+
         $user = $request->getUser();
         if($request->hasParam('id')) {
             $id = $request->query('id');
             $valid = $_SERVER['VALIDATION']->validatePosInteger($id);
             if($valid){
-                $account = $_SERVER['ACCOUNT_REPO']->retrieve('id',$id);
-                $view = $_SERVER['TEMPLATE_SERVICE']->getProfile('ACCOUNT',$user,$account);
+                $account = $_SERVER['ACCOUNT_REPO']->retrieve('id',$id)[0];
+                $registrations = $_SERVER['REGISTRATION_REPO']->retrieve('attendee',$id);
+                $item = array('account'=>$account,'registrations'=>$registrations);
+                $view = $_SERVER['TEMPLATE_SERVICE']->getProfile('ACCOUNT',$user,$item);
                 $response->render($view);
             }else{
                 $view = $_SERVER['TEMPLATE_SERVICE']->getError('Page Not Found');
@@ -26,12 +29,33 @@ class AccountController
         $view = $_SERVER['TEMPLATE_SERVICE']->getCreateAccount($request->getUser());
         $response->render($view);
     }
+    static public function updateForm(IRequest $request,IResponse $response){
+        $user = $request->getUser();
+        if($request->hasParam('id')) {
+            $id = $request->query('id');
+            $valid = $_SERVER['VALIDATION']->validatePosInteger($id);
+            if($valid){
+                $account = $_SERVER['ACCOUNT_REPO']->retrieve('id',$id)[0];
+                $view = $_SERVER['TEMPLATE_SERVICE']->getEditAccount($user,$account);
+                $response->render($view);
+            }else{
+                $view = $_SERVER['TEMPLATE_SERVICE']->getError('Page Not Found');
+                $response->render($view);
+            }
+        }else{
+            $response->redirect('/accounts');
+        }
+    }
+    static public function update(IRequest $request,IResponse $response){
+        $service = $_SERVER['ACCOUNT_SERVICE'];
+        $service->update($request,$response);
+    }
     static public function create(IRequest $request,IResponse $response){
-        $service = $_SERVER['ADMIN_SERVICE'];
-        $service->createAccount($request,$response);
+        $service = $_SERVER['ACCOUNT_SERVICE'];
+        $service->create($request,$response);
     }
     static public function delete(IRequest $request,IResponse $response){
-        $service = $_SERVER['ADMIN_SERVICE'];
-        $service->deleteAccount($request,$response);
+        $service = $_SERVER['ACCOUNT_SERVICE'];
+        $service->delete($request,$response);
     }
 }

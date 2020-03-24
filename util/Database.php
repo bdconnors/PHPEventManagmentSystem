@@ -17,11 +17,13 @@ class Database extends PDO {
     public function create($statement,$params){
         var_dump($params);
         $stmt = $this->prepare($statement);
+        var_dump($stmt);
         $stmt->execute($params);
         return $this->lastInsertId();
     }
 
     public function update($statement,$params){
+        var_dump($params);
         $stmt = $this->prepare($statement);
         $stmt->execute($params);
         return $stmt->rowCount();

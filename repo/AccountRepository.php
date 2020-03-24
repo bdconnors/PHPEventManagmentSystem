@@ -8,12 +8,10 @@ require_once('./model/Account.php');
 class AccountRepository extends Repository
 {
     protected RoleRepository $roles;
-    protected RegistrationRepository $registrations;
     protected array $accounts;
-    public function __construct(Database $db,RoleRepository $roles,RegistrationRepository $reg){
+    public function __construct(Database $db,RoleRepository $roles){
         parent::__construct($db);
         $this->roles = $roles;
-        $this->registrations = $reg;
         $this->accounts = array();
         $this->load();
     }
@@ -21,16 +19,9 @@ class AccountRepository extends Repository
         return $this->accounts;
     }
     public function create($values){
-        $accountId = $this->db->create(SQL::create_user, $values);
-        $role = $this->roles->retrieve('id', $values['role']);
-        unset($values['role']);
-        $values['id'] = $accountId;
-        $values['role'] = $role;
-        $values['registrations'] = $this->registrations->retrieve('attendee',$accountId);
-        $account = $this->build($values);
-        array_push($this->accounts, $account);
-        return $account;
-
+        $values['password'] = $this->hashPassword($values['password']);
+        unset($values['confirmPassword']);
+        return $this->db->create(SQL::create_user, $values);
     }
     public function retrieve($prop,$val){
         $results = [];
@@ -54,22 +45,16 @@ class AccountRepository extends Repository
         }
         return $results;
     }
-    public function update($id,$values){
-        $account = $this->retrieve('id',$id);
-        foreach($values as $key => $value){
-            $account[$key] = $value;
+    public function update($values){
+        if(array_key_exists('password',$values)){
+            $values['password'] = $this->hashPassword($values['password']);
+            unset($values['passwordConfirm']);
         }
-        $query = $this->buildUpdateQuery($id,$values);
+        $query = $this->buildUpdateQuery($values);
         return $this->db->update($query,$values);
     }
     public function delete($id){
-        for($i = 0; $i < count($this->accounts); $i++){
-            $acc = (array) $this->accounts[$i];
-            if($acc['id'] == $id){
-                unset($this->accounts[$i]);
-            }
-        }
-        $query = SQL::delete_user . "idattendee = :id;";
+        $query = SQL::delete_user;
         return $this->db->delete($query,array('id'=>$id));
     }
     public function exists($name){
@@ -86,11 +71,9 @@ class AccountRepository extends Repository
         $rows = $this->db->retrieve(SQL::retrieve_all_users,[]);
         foreach ($rows as $row){
             $role = $this->roles->retrieve('id',$row['role']);
-            $registrations = $this->registrations->retrieve('attendee',$row['idattendee']);
             $id = $row['idattendee'];
             unset($row['role']);
             unset($row['idattendee']);
-            $row['registrations'] = $registrations;
             $row['role'] = $role;
             $row['id'] = $id;
             $account = $this->build($row);
@@ -99,24 +82,33 @@ class AccountRepository extends Repository
     }
     public function getDefault(){
         $role = $this->roles->getDefault();
-        return new Account(-1,'To Be Determined','none',$role,[]);
+        return new Account(-1,'To Be Determined','none',$role);
     }
     public function build($values){
-        return new Account($values['id'],$values['name'],$values['password'],$values['role'],$values['registrations']);
+        return new Account($values['id'],$values['name'],$values['password'],$values['role']);
     }
-    public function buildUpdateQuery($id,$values){
-        $query = SQL::UPDATE.PROP::USER.SQL::SET;
+    public function registerEventAttendee($accId,$eventId,$paid){
+        $values = array('attendee'=>$accId,'event'=>$eventId,'paid'=>$paid);
+        return $this->db->create(SQL::create_attendee_event,$values);
+    }
+    public function buildUpdateQuery($values){
+        $id = $values['id'];
+        unset($values['id']);
+        if(array_key_exists('password',$values)){unset($values['passwordConfirm']);}
+        $query = SQL::update_user;
         $keys = array_keys($values);
         $keyCount = count($keys);
         for($i = 0; $i < $keyCount; $i++){
             $key = $keys[$i];
             $query.=$key.' = :'.$key;
-            if($i != $keyCount-1){
-                $query.=",";
-            }
+            if($i != $keyCount-1){$query.=",";}
         }
-        $query.= SQL::WHERE.PROP::USER_ID.' = '.$id;
+        $values['id'] = $id;
+        $query.= ' WHERE idattendee = :id';
         return $query;
+    }
+    public function hashPassword($plainText){
+        return hash(PROP::HASH_ALG, $plainText);
     }
 
 }

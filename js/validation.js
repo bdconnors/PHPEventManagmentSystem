@@ -1,4 +1,6 @@
-function displayErrors(errors){
+let errors = [];
+
+function displayErrors(){
     const err = document.getElementById('err');
     for(let i = 0; i < errors.length; i++){
         let errorNode = document.createTextNode(errors[i]);
@@ -11,275 +13,41 @@ function displayErrors(errors){
     }
 }
 function clearErrors(){
-    const err = document.getElementById('err');
+    let err = document.getElementById('err');
+    errors = [];
     err.innerText = '';
 }
 function valuesMatch(value1,value2){
     return value1 === value2;
 }
-function validateLogin(){
-    clearErrors();
-    let submit = false;
-    let errors = [];
-    const name = document.getElementById('name').value;
-    const password = document.getElementById('password').value;
-    const validName = validateAlphaNumeric(name);
-    const validPass = validateAlphaNumeric(password);
-    if(!validName || !validPass){
-        errors.push('Invalid user name or password');
-        submit = false;
-    }else{
-        submit = true;
-    }
-    if(!submit){
-        displayErrors(errors);
-    }
-    return submit;
-}
-function validateCreateVenue(){
-    clearErrors();
-    let submit = true;
-    let errors = [];
-    const name = document.getElementById('name').value;
-    const nameConfirm = document.getElementById('nameConfirm').value;
-    const capacity = document.getElementById('capacity').value;
-    const validCapacity = validatePosInteger(capacity);
-    const validName = validateAlphaNumeric(name);
-    if(!valuesMatch(nameConfirm,name)){
-        errors.push('Venue names do not match');
-        submit = false;
-    }
-    if(!validName){
-        errors.push('Invalid name');
-        submit = false;
-    }
-    if(!validCapacity){
-        errors.push('Invalid capacity');
-        submit = false;
-    }
-    if(!submit){
-        displayErrors(errors);
-    }
-    return submit;
-}
-function validateCreateEvent(){
-
-    clearErrors();
-
-    let submit = true;
-    let errors = [];
-    const dateStart = document.getElementById('datestart').value;
-    const dateEnd = document.getElementById('dateend').value;
-    const manager = document.getElementById('manager').value;
-    const venue = document.getElementById('venue').value;
-    const name = document.getElementById('name').value;
-    const nameConfirm = document.getElementById('nameConfirm').value;
-    const capacity = document.getElementById('numberallowed').value;
-    const validName = validateAlphaNumeric(name);
-    const validDateStart = validateDate(dateStart);
-    const validDateEnd = validateDate(dateEnd);
-    const validManager = validateAnyInteger(manager);
-    const validVenue = validateAnyInteger(venue);
-    const validCapacity = validatePosInteger(capacity);
-
-    if(!valuesMatch(nameConfirm,name)){
-        errors.push('Event names do not match');
-        submit = false;
-    }
-    if(!validName){
-        errors.push('Invalid event name');
-        submit = false;
-    }
-    if(!validDateStart){
-        errors.push('Invalid start date');
-        submit = false;
-    }
-    if(!validDateEnd){
-        errors.push('Invalid end date');
-        submit = false;
-    }
-    if(!validVenue){
-        errors.push('Invalid venue');
-        submit = false;
-    }
-    if(!validManager){
-        errors.push('Invalid manager');
-        submit = false;
-    }
-    if(!validCapacity){
-        errors.push('Invalid capacity');
-        submit = false;
-    }
-    if(!submit){
-        displayErrors(errors);
-    }
-    return submit;
-}
-function validateRegistration(){
-
-    clearErrors();
-
-    let submit = true;
-    let errors = [];
-    const name = document.getElementById('name').value;
-    const nameConfirm = document.getElementById('nameConfirm').value;
-    const password = document.getElementById('password').value;
-    const passwordConfirm = document.getElementById('passwordConfirm').value;
-    const validName = validateAlphaNumeric(name);
-    const validPassword = validateAlphaNumeric(password);
-
-    if(!valuesMatch(nameConfirm,name)){
-        errors.push('User names do not match');
-        submit = false;
-    }
-    if(!valuesMatch(passwordConfirm,password)){
-        errors.push('Passwords do not match');
-        submit = false;
-    }
-    if(!validName){
-        errors.push('Invalid User Name');
-        submit = false;
-    }
-    if(!validPassword){
-        errors.push('Invalid Password');
-        submit = false;
-    }
-
-    if(!submit){
-        displayErrors(errors);
-    }
-    return submit;
-}
-function validateAlphaNumeric(value){
-    let valid = true;
-    const reg = /^[a-z0-9]+$/i;
-    let validAlphaNumeric = reg.test(value);
-    let isAttack = attackAttempted(value);
-    if(!validAlphaNumeric || isAttack){
-        valid = false;
-    }
-    return valid;
-
-}
 function validateAlpha(value) {
-    let valid = true;
     value = sanitize(value);
     const reg = /^[A-Za-z]+$/;
-    let validAlpha = reg.test(value);
-    let isAttack = attackAttempted(value);
-    if(!validAlpha || isAttack){
-        valid = false;
-    }
-    return valid;
+    return reg.test(value);
+}
+function validateAlphaNumeric(value){
+    value = sanitize(value);
+    const reg = /^[a-z0-9]+$/i;
+    return reg.test(value);
+}
+function validateAlphaNumericSpaces(value){
+    value = sanitize(value);
+    const reg = /^[a-z\d\-_\s]+$/i;
+    return reg.test(value);
 }
 function validateAnyInteger(value){
-    let valid = true;
     value = sanitize(value);
     const reg = /^-?d+$/;
-    let validNumber = reg.test(value);
-    let isAttack = attackAttempted(value);
-    if(!validNumber|| isAttack){
-        valid = false;
-    }
-    return valid;
+    return reg.test(value);
 }
 function validatePosInteger(value){
-    let valid = true;
     value = sanitize(value);
     const reg = /^[0-9]*$/;
-    let validNumber = reg.test(value);
-    let isAttack = attackAttempted(value);
-    if(!validNumber|| isAttack){
-        valid = false;
-    }
-    return valid;
+    return reg.test(value);
 }
 function validateDate(value){
-    let valid = true;
     value = sanitize(value);
     const reg = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-    let validDate = reg.test(value);
-    let isAttack = attackAttempted(value);
-    if(!valid || !validDate|| isAttack){
-        valid = false;
-    }
-    return valid;
-}
-function attackAttempted(value){
-    let isAttack = false;
-    let scriptAttack = scriptingAttempted(value);
-    let injectionAttack = injectionAttempted(value);
-    if(scriptAttack|| injectionAttack){
-        isAttack = true;
-    }
-    return isAttack;
-}
-function injectionAttempted(value){
-    let attempted = false;
-    let meta = sqlMetaChars(value);
-    let inject = sqlInjection(value);
-    let union = sqlInjectionUnion(value);
-    let select = sqlInjectionSelect(value);
-    let del = sqlInjectionDelete(value);
-    let drop = sqlInjectionDrop(value);
-    let insert = sqlInjectionInsert(value);
-    let update = sqlInjectionUpdate(value);
-    if(meta|| inject|| union || select|| del || drop|| insert || update){
-        attempted = true;
-    }
-    return attempted;
-}
-function scriptingAttempted(value){
-    let attempted = false;
-    let crossSiteScript = crossSite(value);
-    let crossSiteImgScript = crossSiteImg(value);
-    let crossSiteExtraScript = crossSiteAdditional(value);
-    if(crossSiteScript || crossSiteImgScript|| crossSiteExtraScript){
-        attempted = true;
-    }
-    return attempted;
-}
-function sqlMetaChars(value) {
-    const reg = /((\%3D)|(=))[^\n]*((\%27)|(\')|(\-\-)|(\%3B)|(;))/i;
     return reg.test(value);
 }
-function sqlInjection(value) {
-    const reg = /\w*((\%27)|(\'))((\%6F)|o|(\%4F))((\%72)|r|(\%52))/i;
-    return reg.test(value);
-}
-function sqlInjectionUnion(value) {
-    const reg = /((\%27)|(\'))union/i;
-    return reg.test(value);
-}
-function sqlInjectionSelect(value) {
-    const reg = /((\%27)|(\'));\s*select/i;
-    return reg.test(value);
-}
-function sqlInjectionInsert(value) {
-    const reg = /((\%27)|(\'));\s*insert/i;
-    return reg.test(value);
-}
- function sqlInjectionDelete(value) {
-     const reg = /((\%27)|(\'));\s*delete/i;
-     return reg.test(value);
-}
-function sqlInjectionDrop(value) {
-    const reg = /((\%27)|(\'));\s*drop/i;
-    return reg.test(value);
-}
-function sqlInjectionUpdate(value) {
-    const reg = /((\%27)|(\'));\s*update/i;
-    return reg.test(value);
-}
-function crossSite(value) {
-    const reg = /((\%3C)|<)((\%2F)|\/)*[a-z0-9\%]+((\%3E)|>)/i;
-    return reg.test(value);
-}
-function crossSiteImg(value) {
-    const reg = /((\%3C)|<)((\%69)|i|(\%49))((\%6D)|m|(\%4D))((\%67)|g|(\%47))[^\n]+((\%3E)|>)/i;
-    return reg.test(value);
-}
-function crossSiteAdditional(value) {
-    const reg = /((\%3C)|<)[^\n]+((\%3E)|>)/i;
-    return reg.test(value);
-}
+

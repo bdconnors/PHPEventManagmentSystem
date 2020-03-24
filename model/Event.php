@@ -28,7 +28,7 @@ class Event extends Gathering {
     public function isRegistered($accountId){
         $registered = false;
         foreach($this->registrations as $registration){
-            if($registration->attendee == $accountId){
+            if($registration->attendee->id == $accountId){
                 $registered = true;
             }
         }
@@ -37,7 +37,7 @@ class Event extends Gathering {
     public function getRegistration($accountId){
         $selected = false;
         foreach($this->registrations as $registration){
-            if($registration->attendee == $accountId){
+            if($registration->attendee->id == $accountId){
                 $selected = $registration;
             }
         }

@@ -44,8 +44,12 @@ class VenueRepository extends Repository {
         return $venue;
     }
 
-    public function update($id,$values){
-
+    public function update($values){
+        $this->db->update(SQL::update_venue,$values);
+        $venue = $this->retrieve('id',$values['id']);
+        $venue->name = $values['name'];
+        $venue->capacity = $values['capacity'];
+        return $venue;
     }
 
     public function delete($id){

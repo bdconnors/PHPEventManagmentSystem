@@ -5,9 +5,11 @@ class RegistrationRepository extends Repository
 {
     protected array $registrations;
     protected SessionRepository $sessions;
-    public function __construct(Database $db,SessionRepository $sessions){
+    protected AccountRepository $accounts;
+    public function __construct(Database $db,SessionRepository $sessions,AccountRepository $accounts){
         parent::__construct($db);
         $this->sessions = $sessions;
+        $this->accounts = $accounts;
         $this->registrations = array();
         $this->load();
     }
@@ -16,7 +18,9 @@ class RegistrationRepository extends Repository
         $rows = $this->db->retrieve(SQL::retrieve_all_registrations,[]);
         $count = count($this->registrations);
         foreach($rows as $row){;
+            $row['id'] = $count;
             $row['session'] = $this->sessions->retrieve('id',$row['session'])[0];
+            $row['attendee'] = $this->accounts->retrieve('id',$row['attendee'])[0];
             $registration =  $this->build($row);
             array_push(    $this->registrations,$registration);
             $count++;
@@ -29,21 +33,30 @@ class RegistrationRepository extends Repository
         $results = [];
         foreach($this->registrations as $r){
             $reg = (array) $r;
-
-            if ($reg[$prop] == $value) {
-                array_push($results,$r);
+            if($prop == 'session'){
+                if($r->session->id == $value){
+                    array_push($results, $r);
+                }
+            }else if($prop == 'attendee'){
+                if($r->attendee->id == $value){
+                    array_push($results, $r);
+                }
+            }else {
+                if ($reg[$prop] == $value) {
+                    array_push($results, $r);
+                }
             }
 
         }
         return $results;
     }
 
-    public function create($values)
-    {
-        // TODO: Implement create() method.
+    public function create($values){
+        $this->accounts->registerEventAttendee($values['attendee'],$values['event'],$values['paid']);
+        return $this->sessions->registerSessionAttendee($values['attendee'],$values['session']);
     }
 
-    public function update($id, $values)
+    public function update($values)
     {
         // TODO: Implement update() method.
     }

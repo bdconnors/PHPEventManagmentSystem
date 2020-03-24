@@ -84,7 +84,7 @@ class EventRepository extends Repository {
         array_push($this->events,$event);
         return $event;
     }
-    public function update($id,$values){
+    public function update($values){
         // TODO: Implement update() method.
     }
     public function delete($id){

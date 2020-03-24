@@ -25,13 +25,15 @@ abstract class SQL{
     const retrieve_all_events ="SELECT * FROM EVENT";
     const retrieve_all_sessions = "SELECT * FROM SESSION";
     const retrieve_all_event_management ="SELECT * FROM MANAGER_EVENT";
-    const retrieve_all_registrations = "SELECT attendee_event.event,
-                                               attendee_event.attendee,
+    const retrieve_all_registrations = "SELECT event.name,
+                                                attendee_event.event,
+                                                attendee_event.attendee,
                                                 attendee_session.session,
                                                 attendee_event.paid
                                         FROM attendee_event
+                                        INNER JOIN event on event.idevent = attendee_event.event
                                         INNER JOIN
-                                        attendee_session on attendee_session.attendee = attendee_event.attendee;";
+                                        attendee_session on attendee_session.attendee = attendee_event.attendee";
     const create_venue = "INSERT INTO VENUE(name,capacity)VALUES(:name,:capacity)";
     const create_user = self::INSERT.
         self::user_table.
@@ -48,9 +50,17 @@ abstract class SQL{
                                       :numberallowed,
                                       :venue)";
     const create_event_manager = "INSERT INTO MANAGER_EVENT(event,manager)VALUES(:event,:manager)";
+    const create_session = "INSERT INTO SESSION(name,
+                            numberallowed,
+                            event,
+                            startdate,
+                            enddate)VALUES(:name,
+                            :numberallowed,:event,:startdate,:enddate);";
+    const create_attendee_event = "INSERT INTO ATTENDEE_EVENT(event,attendee,paid)VALUES(:event,:attendee,:paid);";
+    const create_attendee_session = "INSERT INTO ATTENDEE_SESSION(session,attendee)VALUES(:session,:attendee);";
     const retrieve_user = self::retrieve_all_users.self::WHERE;
 
-    const delete_user = self::DELETE.self::user_table.self::WHERE;
+    const delete_user = "DELETE FROM ATTENDEE WHERE idattendee = :id";
     const delete_venue = "DELETE FROM VENUE WHERE idvenue = :id";
     const delete_event_sessions = "DELETE FROM SESSION WHERE event = :id;";
     const delete_event_attendees = "DELETE FROM ATTENDEE_EVENT WHERE event = :id;";
@@ -58,4 +68,6 @@ abstract class SQL{
     const delete_event = "DELETE FROM EVENT WHERE idevent = :id;";
 
     const update_event_venue = "UPDATE EVENT SET venue = :venue WHERE venue = :id;";
+    const update_venue ="UPDATE VENUE SET name = :name, capacity = :capacity WHERE idvenue = :id;";
+    const update_user = "UPDATE ATTENDEE SET ";
 }

@@ -35,7 +35,7 @@ class RoleRepository extends Repository {
         // TODO: Implement create() method.
     }
 
-    public function update($id, $values)
+    public function update($values)
     {
         // TODO: Implement update() method.
     }

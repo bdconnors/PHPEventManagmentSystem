@@ -12,7 +12,7 @@ class CreateVenueForm implements ITemplate{
         $form .= new Navigation($this->user);
         $form .= "<div class='container mx-auto'>
                     <p style='color:red' id='err'></p>
-                <form id='createVenueForm' method='POST' action='/venues/create' onsubmit='return validateCreateVenue()'>
+                <form id='createVenueForm' method='POST' action='/venues/create' onsubmit='return validateVenueCreation()'>
                     <div class='form-group row'>
                         <div class='col-md-6'>
                             <label for='name'>Venue Name:</label>         
@@ -40,7 +40,7 @@ class CreateVenueForm implements ITemplate{
                      </div>
                 </form>
                 </div>";
-        $form .= new Foot(array('navbar','validation','sanitization'));
+        $form .= new Foot(array('navbar','validation','sanitization','venueForms'));
         return $form;
     }
 
