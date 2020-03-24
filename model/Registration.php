@@ -2,7 +2,7 @@
 
 
 class Registration extends Entity {
-    public bool $paid;
+    public $paid;
     public $event;
     public $attendee;
     public $session;
