@@ -3,7 +3,7 @@ require_once('./abstraction/Repository.php');
 require_once('./model/Venue.php');
 class VenueRepository extends Repository {
 
-    protected array $venues;
+    protected $venues;
     public function __construct($db){
         parent::__construct($db);
         $this->venues = array();

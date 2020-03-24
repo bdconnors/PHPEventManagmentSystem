@@ -6,7 +6,7 @@ class Menu  {
 
     public $id;
     public $label;
-    public array $options;
+    public $options;
     public function __construct($id,$label,$options = array()) {
         $this->id = $id;
         $this->label = $label;

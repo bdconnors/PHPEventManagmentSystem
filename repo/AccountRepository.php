@@ -8,7 +8,7 @@ require_once('./model/Account.php');
 class AccountRepository extends Repository
 {
     protected $roles;
-    protected array $accounts;
+    protected $accounts;
     public function __construct($db,$roles){
         parent::__construct($db);
         $this->roles = $roles;

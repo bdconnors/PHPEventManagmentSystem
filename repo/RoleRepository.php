@@ -4,7 +4,7 @@ require_once'./model/Role.php';
 require_once'./abstraction/Repository.php';
 require_once'./config/sql.php';
 class RoleRepository extends Repository {
-    protected array $roles;
+    protected $roles;
     public function __construct($db){
         parent::__construct($db);
         $this->roles = array();

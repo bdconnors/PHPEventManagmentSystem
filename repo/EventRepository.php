@@ -8,7 +8,7 @@ class EventRepository extends Repository {
     protected $sessions;
     protected $registrations;
     protected $accounts;
-    protected array $events;
+    protected $events;
     public function __construct($db,$venues,$sessions,$registrations,$accounts){
         parent::__construct($db);
         $this->venues = $venues;
