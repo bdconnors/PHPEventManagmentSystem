@@ -24,7 +24,11 @@ class ListFactory {
                 $list = new VenueList($user,$items);
                 break;
             case 'REGISTRATION':
-                $list = new RegistrationList($user,$items);
+                if(!empty($items['event'])) {
+                    $list = new RegistrationList($user, $items['registrations'],$items['event']);
+                }else{
+                    $list = new RegistrationList($user, $items);
+                }
                 break;
             case 'SESSION':
                 $list = new SessionList($user,$items);

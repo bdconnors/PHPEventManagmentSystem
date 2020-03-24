@@ -20,7 +20,8 @@ class AccountRepository extends Repository
     }
     public function create($values){
         $values['password'] = $this->hashPassword($values['password']);
-        unset($values['confirmPassword']);
+        unset($values['passwordConfirm']);
+        unset($values['nameConfirm']);
         return $this->db->create(SQL::create_user, $values);
     }
     public function retrieve($prop,$val){
@@ -87,9 +88,13 @@ class AccountRepository extends Repository
     public function build($values){
         return new Account($values['id'],$values['name'],$values['password'],$values['role']);
     }
-    public function registerEventAttendee($accId,$eventId,$paid){
+    public function registerEvent($accId,$eventId,$paid){
         $values = array('attendee'=>$accId,'event'=>$eventId,'paid'=>$paid);
         return $this->db->create(SQL::create_attendee_event,$values);
+    }
+    public function unregisterEvent($accId,$eventId){
+        $values = array('attendee'=>$accId,'event'=>$eventId);
+        return $this->db->delete(SQL::delete_attendee_event,$values);
     }
     public function buildUpdateQuery($values){
         $id = $values['id'];

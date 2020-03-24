@@ -23,7 +23,6 @@ class SessionRepository extends Repository {
     public function retrieveAll(){
         return $this->sessions;
     }
-
     public function retrieve($prop, $value){
         $results = [];
         foreach($this->sessions as $s){
@@ -34,22 +33,25 @@ class SessionRepository extends Repository {
         }
         return $results;
     }
-    public function registerSessionAttendee($accId,$sessionId){
+    public function registerAttendee($accId,$sessionId){
         $values = array('attendee'=>$accId,'session'=>$sessionId);
         return $this->db->create(SQL::create_attendee_session,$values);
+    }
+    public function unregisterAttendee($accId,$sessionId){
+        $values = array('attendee'=>$accId,'session'=>$sessionId);
+        return $this->db->delete(SQL::delete_attendee_session,$values);
     }
     public function create($values){
         unset($values['nameConfirm']);
         var_dump($values);
         return $this->db->create(SQL::create_session,$values);
     }
-
     public function update($values){
-        // TODO: Implement update() method.
+        return $this->db->update(SQL::update_session,$values);
     }
-
     public function delete($id){
-        // TODO: Implement delete() method.
+        $values = array('id'=>$id);
+        return $this->db->delete(SQL::delete_session,$values);
     }
     public function deleteEventSessions($eventId){
         $sessions = $this->retrieve('event',$eventId);
@@ -81,7 +83,7 @@ class SessionRepository extends Repository {
         return $params;
     }
     public function buildDeleteAttendeeSessionsQuery($count){
-        $query ="DELETE FROM ATTENDEE_SESSION WHERE ";
+        $query = SQL::delete_attendee_session_begin;
         for($i = 0; $i < $count; $i++){
             $query .= "session = :param{$i}";
             if($i != $count-1) {

@@ -55,7 +55,33 @@ class SessionController {
             $response->render($view);
         }
     }
+    static public function updateForm(IRequest $request,IResponse $response){
+        $user = $request->getUser();
+        $hasId = $request->hasParam('id');
+        if($hasId) {
+            $id = $request->query('id');
+            $valid = $_SERVER['VALIDATION']->validatePosInteger($id);
+            if($valid) {
+                $session = $_SERVER['SESSION_REPO']->retrieve('id', $id)[0];
+                $view = $_SERVER['TEMPLATE_SERVICE']->getEditSession($user, $session);
+                $response->render($view);
+            }else{
+                $view = $_SERVER['TEMPLATE_SERVICE']->getError('Page Not Found');
+                $response->render($view);
+            }
+        }else{
+            $view = $_SERVER['TEMPLATE_SERVICE']->getError('Page Not Found');
+            $response->render($view);
+        }
+    }
     static public function create(IRequest $request,IResponse $response){
         $_SERVER['SESSION_SERVICE']->create($request,$response);
     }
+    static public function delete(IRequest $request,IResponse $response){
+        $_SERVER['SESSION_SERVICE']->delete($request,$response);
+    }
+    static public function update(IRequest $request,IResponse $response){
+        $_SERVER['SESSION_SERVICE']->update($request,$response);
+    }
+
 }

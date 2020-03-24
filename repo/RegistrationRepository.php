@@ -52,17 +52,42 @@ class RegistrationRepository extends Repository
     }
 
     public function create($values){
-        $this->accounts->registerEventAttendee($values['attendee'],$values['event'],$values['paid']);
-        return $this->sessions->registerSessionAttendee($values['attendee'],$values['session']);
+        $this->accounts->registerEvent($values['attendee'],$values['event'],$values['paid']);
+        return $this->sessions->registerAttendee($values['attendee'],$values['session']);
     }
 
-    public function update($values)
-    {
-        // TODO: Implement update() method.
+    public function update($values){
+        $id = $values['id'];
+        $registration = $this->retrieve('id',$id)[0];
+        $attendeeId = $registration->attendee->id;
+        $sessionId = $registration->session->id;
+        $eventId = $registration->event;
+        $paid = $registration->paid;
+        if(!empty($values['paid'])){
+            $paid = 0;
+        }else{
+            $paid = 1;
+        }
+        $sessionVals = array('session'=>$values['session'],'attendee'=>$attendeeId,'id'=>$sessionId);
+        $eventVals = array('paid'=>$paid,'attendee'=>$attendeeId,'id'=>$eventId);
+        $this->db->update(SQL::update_attendee_session,$sessionVals);
+        return $this->db->update(SQL::update_attendee_event,$eventVals);
     }
 
     public function delete($id) {
-
+        $registration = $this->retrieve('id',$id)[0];
+        $accId = $registration->attendee->id;
+        $eventId = $registration->event;
+        $sessionId = $registration->session->id;
+        $this->accounts->unregisterEvent($accId,$eventId);
+        return $this->sessions->unregisterAttendee($accId,$sessionId);
+    }
+    public function deleteEventSession($sessionId){
+        $registrations = $this->retrieve('session',$sessionId);
+        foreach($registrations as $registration){
+            $this->delete($registration->id);
+        }
+        return $this->sessions->delete($sessionId);
     }
     public function deleteEventRegistrations($eventId){
         $result = $this->db->delete(SQL::delete_event_attendees,array('id'=>$eventId));

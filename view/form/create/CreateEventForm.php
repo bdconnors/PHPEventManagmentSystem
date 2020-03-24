@@ -18,7 +18,7 @@ class CreateEventForm implements ITemplate{
         $form .= new Navigation($this->user);
         $form .= "<div class='container mx-auto'>
                     <p style='color:red' id='err'></p>
-                <form id='createEventForm' method='POST' action='/events/create' onsubmit='return validateAccountCreation()'>
+                <form id='createEventForm' method='POST' action='/events/create' onsubmit='return validateEventCreation()'>
                     <div class='container'>
                          <h4>Event Name</h4> 
                         <div class='form-inline'> 
@@ -43,9 +43,8 @@ class CreateEventForm implements ITemplate{
                           
                             <input type='date' value={$defaultDate} class='form-control mr-1' name='dateend' id='dateend'/>
                         </div>
-                    </div>";
-
-        $form.= "<div class='container'>
+                    </div>
+                    <div class='container'>
                         <h4>Number Allowed</h4> 
                         <div class='form-inline'>
                                 
@@ -77,7 +76,7 @@ class CreateEventForm implements ITemplate{
         </div>";
         $form .="<br/><div class='container'>
                         <div class='form-inline'>
-                            <button class='btn btn-secondary' type='button'>Submit</button>     
+                            <button class='btn btn-secondary' type='submit'>Submit</button>     
                             <button class='btn btn-secondary' type='reset'>Reset</button>
                         </div>
                      </div>

@@ -12,8 +12,8 @@ abstract class Gathering extends Entity {
 
     public function __construct($id, $name,$dateStart,$dateEnd,$numberAllowed){
         parent::__construct($id, $name);
-        $this->dateStart = $dateStart;
-        $this->dateEnd = $dateEnd;
+        $this->dateStart = date("Y-m-j",strtotime($dateStart));
+        $this->dateEnd = date("Y-m-j",strtotime($dateEnd));;
         $this->numberAllowed = $numberAllowed;
     }
 

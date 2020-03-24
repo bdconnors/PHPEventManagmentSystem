@@ -61,18 +61,6 @@ function toggleUpdatePassword(e){
         confirmInput.disabled = true;
     }
 }
-function hidePasswordUpdate(){
-    let updateInput = document.getElementById('updatePassInput');
-    let pass = document.getElementById('password');
-    let confirmPass = document.getElementById('passwordConfirm');
-    let updateBtn = document.getElementById('updatePassBtn');
-    let cancelBtn = document.getElementById('cancelUpdateBtn');
-    cancelBtn.style.display = 'none';
-    updateInput.style.display = 'none';
-    pass.disabled = true;
-    confirmPass.disabled = true;
-    updateBtn.style.display ='';
-}
 function validateLogin(){
     clearErrors();
     const validName = validateName();
@@ -91,6 +79,7 @@ function validateAccountCreation(){
     const passConfirmed = confirmPassword();
     const valid = validRole && validName && nameConfirmed && validPass && passConfirmed;
     if(!valid){displayErrors(errors);}
+    console.log(valid);
     return valid;
 }
 function validateAccountUpdate(){

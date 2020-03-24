@@ -1,23 +1,3 @@
-let newVenues = [];
-let newSessions = [];
-function reset(){
-    newSessions = [];
-    newVenues = [];
-}
-function newSession(name,numberallowed,startdate,enddate){
-    newSessions.push({
-        name:name,
-        numberallowed:numberallowed,
-        startdate:startdate,
-        enddate:enddate
-    });
-}
-function newVenue(name,capacity){
-    newVenues.push({
-        name:name,
-        capacity:capacity
-    });
-}
 function validateEventCreation(){
     clearErrors();
     const validName = nameValidAndConfirmed();
@@ -27,6 +7,7 @@ function validateEventCreation(){
     const validNumberAllowed = validateNumberAllowed();
     const valid = validName && validDateRange && validVenue && validManager && validNumberAllowed;
     if(!valid){displayErrors();}
+    console.log(valid);
     return valid;
 }
 function validateDateRange(){

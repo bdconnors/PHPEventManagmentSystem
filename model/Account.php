@@ -14,8 +14,5 @@ class Account extends Entity {
     public function getPassword(){
         return $this->password;
     }
-    public function __toString(){
-        return json_encode($this);
-    }
 
 }

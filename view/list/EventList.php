@@ -24,10 +24,18 @@ class EventList implements ITemplate {
         $list .="<h1>Events</h1>";
         foreach($this->events as $event){
             $isRegistered = $event->isRegistered($this->user->id);
+            $isAdmin = $this->user->role->id <= 2;
+            $isManager = $event->manager->id == $this->user->id;
             $list .= "<div class='card' style='width: 18rem;'>
                     <div class='card-body'>
                         <h5 class='card-title'>{$event->name}</h5>
                         <h6 class='card-subtitle mb-2 text-muted'>Date: {$event->dateStart}</h6>";
+            if($isManager){
+                $list .= "<h6 class='card-subtitle mb-2' style='color:goldenrod'>
+                                <i class='fa fa-star'></i> 
+                                You are managing this event
+                            </h6>";
+            }
             if($isRegistered){
                 $list .= "<h6 class='card-subtitle mb-2' style='color:green'>
                                 <i class='fa fa-check'></i> 
@@ -49,7 +57,7 @@ class EventList implements ITemplate {
                             <input name='id' type='hidden' value='{$event->id}'/>
                             <button type='submit' class='btn btn-secondary'>View</button>
                         </form>";
-            if($this->user->role->id == 1 || $this->user->role->id == 2||$event->manager == $this->user->id){
+            if($isAdmin||$isManager){
                 $list .= "<form id='eventDelete' method='POST' action='/events/delete'>
                             <input name='_method' type='hidden' value='DELETE' />
                             <input name='id' type='hidden' value='{$event->id}'/>

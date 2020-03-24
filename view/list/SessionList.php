@@ -31,10 +31,13 @@ class SessionList implements ITemplate {
                             <input name='id' type='hidden' value='{$session->id}'/>
                             <button class='btn btn-secondary' type='submit'>View</button>
                         </form>";
-                if ($this->user->role->id == 1 || $this->user->role->id == 2 || $this->event->manager == $this->user->id) {
+                $isAdmin = $this->user->id <= 2;
+                $isManager = $this->user->id == $this->event->manager->id;
+                if ($isAdmin || $isManager) {
                     $list .= "<form id='sessionDelete' method='POST' action='/sessions/delete'>
                         <input name='_method' type='hidden' value='DELETE' />
                         <input name='id' type='hidden' value='{$session->id}'/>
+                        <input name='event' type='hidden' value='{$this->event->id}'/>
                         <button type='submit' class='btn btn-secondary'>Remove</button>
                     </form>
                     <form method='GET' action='/sessions/edit'>

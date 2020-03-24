@@ -96,15 +96,15 @@ $router->get('/venues/edit', 'VenueController', 'updateForm',2);
 
 $router->get('/events', 'EventController', 'index',4);
 $router->get('/events/create', 'EventController', 'createForm',3);
-$router->get('/events/edit', 'EventController', 'editForm',3);
+$router->get('/events/edit', 'EventController', 'updateForm',3);
 
 $router->get('/sessions', 'SessionController', 'index',4);
 $router->get('/sessions/create', 'SessionController', 'createForm',3);
-$router->get('/sessions/edit', 'SessionController', 'editForm',3);
+$router->get('/sessions/edit', 'SessionController', 'updateForm',3);
 
 $router->get('/registrations', 'RegistrationController', 'index',4);
 $router->get('/registrations/create', 'RegistrationController', 'createForm',4);
-$router->get('/registrations/edit', 'RegistrationController', 'editForm',4);
+$router->get('/registrations/edit', 'RegistrationController', 'updateForm',4);
 
 //POST
 $router->post('/accounts/create', 'AccountController', 'create',2);

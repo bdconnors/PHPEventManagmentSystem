@@ -23,5 +23,27 @@ class RegistrationService {
             $response->send('invalid input');
         }
     }
+    public function delete(IRequest $request,IResponse $response){
+        $validation = $_SERVER['VALIDATION'];
+        $body = $request->getBody();
+        $valid = $validation->validatePosInteger($body['id']);
+        if($valid){
+            $_SERVER['REGISTRATION_REPO']->delete($body['id']);
+            $response->redirect("/registrations");
+        }else{
+            $response->send('invalid input');
+        }
+    }
+    public function update(IRequest $request,IResponse $response){
+        $validation = $_SERVER['VALIDATION'];
+        $body = $request->getBody();
+        $valid = $validation->validatePosInteger($body['id']);
+        if($valid){
+            $_SERVER['REGISTRATION_REPO']->update($body);
+            $response->redirect("/registrations?id={$body['id']}");
+        }else{
+            $response->send('invalid input');
+        }
+    }
 
 }

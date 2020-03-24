@@ -43,11 +43,11 @@ class EventRepository extends Repository {
         }
     }
     public function getEventManager($eventId){
-        $result = $this->db->retrieve(SQL::retrieve_event_manager,['id'=>$eventId]);;
-        if(!isset($result[0])) {
-            $managerId = $result['manager'];
+        $result = $this->db->retrieve(SQL::retrieve_event_manager,['id'=>$eventId]);
+        if(!empty($result[0])) {
+            $managerId = $result[0]['manager'];
             if ($managerId != -1) {
-                return $this->accounts->retrieve('id', $managerId);
+                return $this->accounts->retrieve('id', $managerId)[0];
             } else {
                 return $this->accounts->getDefault();
             }

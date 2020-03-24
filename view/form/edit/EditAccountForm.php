@@ -22,14 +22,11 @@ class EditAccountForm implements ITemplate{
                     <div class='container'>
                         <h4>Account Role</h4>
                         <div class='form-inline'>
-                            <select class='form-control mr-1'  id='role' name='role' disabled>     
+                            <select class='form-control mr-1'  id='role' name='role'>     
                                 <option selected value='4'>Attendee</option>
                                 <option value='3'>Event Manager</option>
                                 <option value='2'>Admin</option>
                             </select>  
-                            <button id='editRoleBtn' name='edit' type='button' class='btn btn-secondary'>
-                                Edit
-                            </button> 
                         </div>
                     </div>
                     <br/>
@@ -37,10 +34,6 @@ class EditAccountForm implements ITemplate{
                         <h4>Account Name:</h4>  
                         <div class='form-inline'>       
                             <input class='form-control mr-1' type='text' value='{$this->account->name}' 
-                            name='name' id='name' disabled/>
-                            <button id='editNameBtn' name='edit' type='button' class='btn btn-secondary'>
-                                Edit
-                            </button>
                         </div>
                     </div>
                     <br/>
