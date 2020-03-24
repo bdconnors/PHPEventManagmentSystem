@@ -5,5 +5,5 @@ interface IResponse {
     public function sendJSON($content);
     public function redirect($url);
     public function sendFile($location);
-    public function render(ITemplate $template);
+    public function render($template);
 }

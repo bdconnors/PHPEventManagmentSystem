@@ -3,7 +3,7 @@
 
 class RegistrationController
 {
-    static public function index(IRequest $request,IResponse $response){
+    static public function index( $request, $response){
         $user = $request->getUser();
         $hasId =  $hasEventId = $request->hasParam('id');
         $hasEvent = $request->hasParam('event');
@@ -37,7 +37,7 @@ class RegistrationController
             $response->render($view);
         }
     }
-    static public function createForm(IRequest $request,IResponse $response){
+    static public function createForm( $request, $response){
         $user = $request->getUser();
         $hasEvent = $request->hasParam('event');
         $hasAttendee = $request->hasParam('attendee');
@@ -61,7 +61,7 @@ class RegistrationController
             $response->render($view);
         }
     }
-    static public function updateForm(IRequest $request,IResponse $response){
+    static public function updateForm( $request, $response){
         $user = $request->getUser();
         $hasId= $request->hasParam('id');
         if($hasId) {
@@ -82,13 +82,13 @@ class RegistrationController
             $response->render($view);
         }
     }
-    static public function create(IRequest $request,IResponse $response){
+    static public function create( $request, $response){
         $_SERVER['REGISTRATION_SERVICE']->create($request,$response);
     }
-    static public function delete(IRequest $request,IResponse $response){
+    static public function delete( $request, $response){
         $_SERVER['REGISTRATION_SERVICE']->delete($request,$response);
     }
-    static public function update(IRequest $request,IResponse $response){
+    static public function update( $request, $response){
         $_SERVER['REGISTRATION_SERVICE']->update($request,$response);
     }
 }

@@ -4,7 +4,7 @@ require_once './view/component/NavigationBar.php';
 require_once './view/component/MenuItem.php';
 require_once './view/component/Menu.php';
 class NavigationBuilder {
-    public NavigationBar $nav;
+    public $nav;
     public function __construct(){
         $this->nav = new NavigationBar();
     }

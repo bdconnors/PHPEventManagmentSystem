@@ -3,7 +3,7 @@
 
 class RegistrationService {
     public function __construct(){}
-    public function create(IRequest $request,IResponse $response){
+    public function create( $request, $response){
         $validation = $_SERVER['VALIDATION'];
         $body = $request->getBody();
         $validSession = $validation->validatePosInteger($body['session']);
@@ -23,7 +23,7 @@ class RegistrationService {
             $response->send('invalid input');
         }
     }
-    public function delete(IRequest $request,IResponse $response){
+    public function delete( $request, $response){
         $validation = $_SERVER['VALIDATION'];
         $body = $request->getBody();
         $valid = $validation->validatePosInteger($body['id']);
@@ -34,7 +34,7 @@ class RegistrationService {
             $response->send('invalid input');
         }
     }
-    public function update(IRequest $request,IResponse $response){
+    public function update( $request, $response){
         $validation = $_SERVER['VALIDATION'];
         $body = $request->getBody();
         $valid = $validation->validatePosInteger($body['id']);

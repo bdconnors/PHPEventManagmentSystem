@@ -4,7 +4,7 @@
 class SessionService {
     public function __construct(){}
 
-    public function create(IRequest $request,IResponse $response){
+    public function create( $request, $response){
         $body = $request->getBody();
         $validEventId = $_SERVER['VALIDATION']->validatePosInteger($body['event']);
         $validName = $_SERVER['VALIDATION']->validateAlphaNumericSpaces($body['name']);
@@ -19,7 +19,7 @@ class SessionService {
             $response->send('invalid input');
         }
     }
-    public function delete(IRequest $request,IResponse $response){
+    public function delete( $request, $response){
         $body = $request->getBody();
         $valid = $_SERVER['VALIDATION']->validatePosInteger($body['id']);
         if($valid){
@@ -30,7 +30,7 @@ class SessionService {
         }
 
     }
-    public function update(IRequest $request,IResponse $response){
+    public function update( $request, $response){
         $body = $request->getBody();
         $valid = $_SERVER['VALIDATION']->validatePosInteger($body['id']);
         if($valid){

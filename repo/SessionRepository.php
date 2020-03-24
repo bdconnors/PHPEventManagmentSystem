@@ -4,7 +4,7 @@ require_once('./abstraction/Repository.php');
 class SessionRepository extends Repository {
 
     protected array $sessions;
-    public function __construct(Database $db){
+    public function __construct($db){
         parent::__construct($db);
         $this->sessions = array();
         $this->load();

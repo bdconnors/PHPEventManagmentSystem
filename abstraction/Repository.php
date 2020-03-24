@@ -2,9 +2,9 @@
 require_once('./util/Database.php');
 abstract class Repository{
 
-    protected Database $db;
+    protected $db;
 
-    public function __construct(Database $db){
+    public function __construct($db){
         $this->db = $db;
     }
 

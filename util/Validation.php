@@ -2,8 +2,8 @@
 
 
 class Validation {
-    private Sanitization $sanitization;
-    public function __construct(Sanitization $sanitization) {
+    private $sanitization;
+    public function __construct($sanitization) {
         $this->sanitization = $sanitization;
     }
 

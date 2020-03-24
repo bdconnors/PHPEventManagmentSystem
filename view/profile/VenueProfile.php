@@ -3,7 +3,7 @@
 require_once './interface/ITemplate.php';
 class VenueProfile implements ITemplate {
     public $user;
-    public Venue $venue;
+    public $venue;
     public function __construct($user,$venue){
         $this->user = $user;
         $this->venue = $venue;

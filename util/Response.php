@@ -17,7 +17,7 @@ class Response implements IResponse {
     public function sendFile($location){
         readfile($location);
     }
-    public function render(ITemplate $template){
+    public function render($template){
         echo $template;
     }
 

@@ -12,7 +12,7 @@ class Route {
         $this->function = $function;
         $this->permission = $permission;
     }
-    public function resolve(IRequest $request,IResponse $response){
+    public function resolve($request, $response){
         call_user_func_array(array($this->controller,$this->function), array($request, $response));
     }
 }

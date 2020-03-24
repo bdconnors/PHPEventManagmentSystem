@@ -3,7 +3,7 @@
 require_once './interface/ITemplate.php';
 class SessionProfile implements ITemplate {
     public $user;
-    public Session $session;
+    public $session;
     public $registrations;
     public function __construct($user,$session,$registrations){
         $this->user = $user;

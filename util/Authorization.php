@@ -5,7 +5,7 @@ class Authorization {
 
     public function __construct(){}
 
-    public function authorize(Route $route,IRequest $request,IResponse $response){
+    public function authorize( $route, $request, $response){
         $public = $route->permission == 5;
         $hasSession = $request->validSession();
         if($public){

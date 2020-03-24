@@ -3,8 +3,8 @@
 require_once './view/component/AccountPanel.php';
 require_once './view/component/MenuPanel.php';
 class NavigationBar {
-    public AccountPanel $accountPanel;
-    public MenuPanel $menuPanel;
+    public $accountPanel;
+    public $menuPanel;
     public function __construct(){
         $this->menuPanel = new MenuPanel();
         $this->accountPanel = new AccountPanel();

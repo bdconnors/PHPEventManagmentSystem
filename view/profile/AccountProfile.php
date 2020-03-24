@@ -3,7 +3,7 @@
 require_once './interface/ITemplate.php';
 class AccountProfile implements ITemplate {
     public $user;
-    public Account $account;
+    public $account;
     public $registrations;
     public function __construct($user,$account,$registrations){
         $this->user = $user;

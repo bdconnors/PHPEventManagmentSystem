@@ -1,7 +1,7 @@
 <?php
 ;
 class AccountPanel {
-    public Account $account;
+    public $account;
     public function __construct(){}
 
     public function __toString(){

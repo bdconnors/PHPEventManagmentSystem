@@ -2,7 +2,7 @@
 
 
 class VenueController {
-    static public function index(IRequest $request,IResponse $response){
+    static public function index( $request, $response){
         $user = $request->getUser();
         if($request->hasParam('id')) {
             $id = $request->query('id');
@@ -21,7 +21,7 @@ class VenueController {
             $response->render($view);
         }
     }
-    static public function updateForm(IRequest $request,IResponse $response){
+    static public function updateForm( $request, $response){
         $user = $request->getUser();
         if($request->hasParam('id')) {
             $id = $request->query('id');
@@ -38,17 +38,17 @@ class VenueController {
             $response->redirect('/venues');
         }
     }
-    static public function createForm(IRequest $request,IResponse $response){
+    static public function createForm( $request, $response){
         $view = $_SERVER['TEMPLATE_SERVICE']->getCreateVenue($request->getUser());
         $response->render($view);
     }
-    static public function update(IRequest $request,IResponse $response){
+    static public function update( $request, $response){
         $_SERVER['VENUE_SERVICE']->update($request,$response);
     }
-    static public function create(IRequest $request,IResponse $response){
+    static public function create( $request, $response){
         $_SERVER['VENUE_SERVICE']->create($request,$response);
     }
-    static public function delete(IRequest $request,IResponse $response){
+    static public function delete( $request, $response){
         $_SERVER['VENUE_SERVICE']->delete($request,$response);
     }
 }

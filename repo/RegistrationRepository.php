@@ -3,10 +3,10 @@
 require_once './model/Registration.php';
 class RegistrationRepository extends Repository
 {
-    protected array $registrations;
-    protected SessionRepository $sessions;
-    protected AccountRepository $accounts;
-    public function __construct(Database $db,SessionRepository $sessions,AccountRepository $accounts){
+    protected $registrations;
+    protected $sessions;
+    protected $accounts;
+    public function __construct($db,$sessions, $accounts){
         parent::__construct($db);
         $this->sessions = $sessions;
         $this->accounts = $accounts;

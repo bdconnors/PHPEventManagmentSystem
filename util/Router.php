@@ -2,8 +2,8 @@
 require_once('./util/Response.php');
 class Router{
     public $routes;
-    protected Authorization $auth;
-    function __construct(Authorization $auth){
+    protected $auth;
+    function __construct($auth){
         $this->auth = $auth;
         $this->routes = array(
             'GET'=>array(),
@@ -27,7 +27,7 @@ class Router{
     protected function addRoute($method,$path,$controller,$function,$permissionLevel){
         $this->routes[$method][$path] = new Route($path,$controller,$function,$permissionLevel);
     }
-    public function resolve(IRequest $request,IResponse $response){
+    public function resolve($request, $response){
         $method = $request->method;
         $path = $request->getPath();
         if (isset($this->routes[$method][$path])) {

@@ -4,12 +4,12 @@ require_once('./model/Event.php');
 require_once('./model/Registration.php');
 require_once('./model/Session.php');
 class EventRepository extends Repository {
-    protected VenueRepository $venues;
-    protected SessionRepository $sessions;
-    protected RegistrationRepository $registrations;
-    protected AccountRepository $accounts;
+    protected $venues;
+    protected $sessions;
+    protected $registrations;
+    protected $accounts;
     protected array $events;
-    public function __construct(Database $db,$venues,$sessions,$registrations,$accounts){
+    public function __construct($db,$venues,$sessions,$registrations,$accounts){
         parent::__construct($db);
         $this->venues = $venues;
         $this->sessions = $sessions;

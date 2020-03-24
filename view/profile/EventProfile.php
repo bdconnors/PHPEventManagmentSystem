@@ -3,7 +3,7 @@
 require_once './interface/ITemplate.php';
 class EventProfile implements ITemplate {
     public $user;
-    public Event $event;
+    public $event;
     public function __construct($user,$event){
         $this->user = $user;
         $this->event = $event;

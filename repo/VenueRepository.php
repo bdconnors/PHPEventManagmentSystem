@@ -4,7 +4,7 @@ require_once('./model/Venue.php');
 class VenueRepository extends Repository {
 
     protected array $venues;
-    public function __construct(Database $db){
+    public function __construct($db){
         parent::__construct($db);
         $this->venues = array();
         $this->load();

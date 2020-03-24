@@ -3,7 +3,7 @@
 
 class AccountController
 {
-    static public function index(IRequest $request,IResponse $response){
+    static public function index( $request, $response){
 
         $user = $request->getUser();
         if($request->hasParam('id')) {
@@ -25,11 +25,11 @@ class AccountController
             $response->render($view);
         }
     }
-    static public function createForm(IRequest $request,IResponse $response){
+    static public function createForm( $request, $response){
         $view = $_SERVER['TEMPLATE_SERVICE']->getCreateAccount($request->getUser());
         $response->render($view);
     }
-    static public function updateForm(IRequest $request,IResponse $response){
+    static public function updateForm( $request, $response){
         $user = $request->getUser();
         if($request->hasParam('id')) {
             $id = $request->query('id');
@@ -46,15 +46,15 @@ class AccountController
             $response->redirect('/accounts');
         }
     }
-    static public function update(IRequest $request,IResponse $response){
+    static public function update( $request, $response){
         $service = $_SERVER['ACCOUNT_SERVICE'];
         $service->update($request,$response);
     }
-    static public function create(IRequest $request,IResponse $response){
+    static public function create( $request, $response){
         $service = $_SERVER['ACCOUNT_SERVICE'];
         $service->create($request,$response);
     }
-    static public function delete(IRequest $request,IResponse $response){
+    static public function delete( $request, $response){
         $service = $_SERVER['ACCOUNT_SERVICE'];
         $service->delete($request,$response);
     }

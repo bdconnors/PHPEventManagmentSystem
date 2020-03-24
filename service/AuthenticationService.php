@@ -5,7 +5,7 @@ class AuthenticationService {
 
     public function __construct(){}
 
-    public function authenticate(IRequest $request,IResponse $response){
+    public function authenticate( $request, $response){
         $body = $request->getBody();
         $validName = $_SERVER['VALIDATION']->validateAlphaNumeric($body['name']);
         $validPass = $_SERVER['VALIDATION']->validateAlphaNumeric($body['password']);

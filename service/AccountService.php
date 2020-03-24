@@ -2,7 +2,7 @@
 
 class AccountService{
     public function __construct(){}
-    public function create(IRequest $request,IResponse $response){
+    public function create($request,$response){
         $body = $request->getBody();
         $validation = $_SERVER['VALIDATION'];
         $validName = $validation->validateAlphaNumeric($body['name']);
@@ -15,7 +15,7 @@ class AccountService{
             $response->send(new CreateAccountForm('Invalid user name or password'));
         }
     }
-    public function retrieve(IRequest $request,IResponse $response){
+    public function retrieve( $request, $response){
         if($request->hasParam('id')) {
             $id = $request->query('id');
             $validation = $_SERVER['VALIDATION'];
@@ -29,7 +29,7 @@ class AccountService{
             $response->sendJSON('Account ID required to retrieve ');
         }
     }
-    public function update(IRequest $request,IResponse $response){
+    public function update( $request, $response){
 
         if($request->hasParam('id')) {
             $id = $request->query('id');
@@ -46,7 +46,7 @@ class AccountService{
         }
 
     }
-    public function delete(IRequest $request,IResponse $response){
+    public function delete( $request, $response){
         $id = $request->getBody()['id'];
         $validation = $_SERVER['VALIDATION'];
         if($validation->validatePosInteger($id)) {

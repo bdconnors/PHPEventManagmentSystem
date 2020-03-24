@@ -4,7 +4,7 @@
 class VenueService {
     public function __construct(){}
 
-    public function create(IRequest $request,IResponse $response){
+    public function create( $request, $response){
         $values = $request->getBody();
         $validName = $_SERVER['VALIDATION']->validateAlphaNumericSpaces($values['name']);
         $validCapacity = $_SERVER['VALIDATION']->validatePosInteger($values['capacity']);
@@ -16,7 +16,7 @@ class VenueService {
             $response->send("Invalid Input");
         }
     }
-    public function delete(IRequest $request,IResponse $response){
+    public function delete( $request, $response){
         $id = $request->getBody()['id'];
         $validation = $_SERVER['VALIDATION'];
         if($validation->validatePosInteger($id)) {
@@ -27,7 +27,7 @@ class VenueService {
         }
 
     }
-    public function update(IRequest $request,IResponse $response){
+    public function update( $request, $response){
         $body = $request->getBody();
         $validation = $_SERVER['VALIDATION'];
         $validId = $validation->validatePosInteger($body['id']);

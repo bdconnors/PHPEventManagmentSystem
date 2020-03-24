@@ -4,7 +4,7 @@
 class EventService {
     public function __construct(){}
 
-    public function create(IRequest $request, IResponse $response){
+    public function create( $request,  $response){
         $body = $request->getBody();
         $validation = $_SERVER['VALIDATION'];
         $name = $body['name'];
@@ -27,7 +27,7 @@ class EventService {
             $response->sendJSON('Invalid Input');
         }
     }
-    public function delete(IRequest $request,IResponse $response){
+    public function delete( $request, $response){
         $id = $request->getBody()['id'];
         $validation = $_SERVER['VALIDATION'];
         if($validation->validatePosInteger($id)) {
