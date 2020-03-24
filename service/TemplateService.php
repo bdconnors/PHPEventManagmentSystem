@@ -16,8 +16,8 @@ require_once './view/form/edit/EditRegistrationForm.php';
 
 class TemplateService {
 
-    protected ListFactory $lists;
-    protected ProfileFactory $profiles;
+    protected $lists;
+    protected $profiles;
     public function __construct($lists,$profiles){
         $this->lists = $lists;
         $this->profiles = $profiles;
